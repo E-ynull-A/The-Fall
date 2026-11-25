@@ -782,3 +782,193 @@ body {
   top: 86px;
   bottom: auto;
 }
+
+
+/* ── Cartographic pass: calmer parchment, finer borders, clearer names ── */
+.atlas {
+  background:
+    radial-gradient(ellipse at 52% 42%, rgba(222, 204, 160, 0.08), transparent 65%),
+    linear-gradient(135deg, #21170f, #302216 48%, #1b130d);
+  border: 1px solid rgba(182, 143, 70, 0.72);
+  box-shadow:
+    inset 0 1px 0 rgba(245, 225, 180, 0.09),
+    0 9px 26px rgba(0, 0, 0, 0.48);
+}
+
+.atlas-map {
+  filter: drop-shadow(0 3px 9px rgba(0, 0, 0, 0.32));
+}
+
+.sea {
+  fill: #b8b99f;
+}
+
+.sea__wave {
+  stroke: #70745f;
+  stroke-width: 0.72;
+  opacity: 0.28;
+}
+
+.sea__wave--faint { opacity: 0.14; }
+
+.sea__label {
+  fill: #515642;
+  font-size: 14px;
+  letter-spacing: 0.58em;
+  opacity: 0.72;
+}
+
+.land { fill: #e9ddbd; }
+
+.prov {
+  fill-opacity: 0.36;
+  transition: fill-opacity 180ms ease, filter 180ms ease;
+}
+
+.prov--player { fill-opacity: 0.43; }
+.prov--neighbor { fill-opacity: 0.48; }
+.prov:hover,
+.prov:focus-visible { fill-opacity: 0.56; }
+.prov--selected,
+.prov--selected:hover { fill-opacity: 0.66; }
+
+.terrain {
+  opacity: 0.14;
+  mix-blend-mode: multiply;
+}
+
+.terrain-line {
+  fill: none;
+  stroke: #5b503f;
+  stroke-width: 0.72;
+  opacity: 0.58;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.terrain-line--faint {
+  stroke-width: 0.58;
+  opacity: 0.34;
+}
+
+.terrain-dot {
+  fill: #65533b;
+  opacity: 0.48;
+}
+
+.claim-hatch__line {
+  stroke: #7a2e2e;
+  stroke-width: 1.05;
+  opacity: 0.28;
+}
+
+.border--province {
+  stroke: #75654d;
+  stroke-width: 0.85;
+  stroke-dasharray: 3 4;
+  opacity: 0.48;
+}
+
+.border--realm {
+  stroke: #382719;
+  stroke-width: 2.15;
+  opacity: 0.92;
+}
+
+.coast--shore {
+  stroke: #77806c;
+  stroke-width: 7;
+  opacity: 0.18;
+}
+
+.coast {
+  stroke: #453522;
+  stroke-width: 2;
+}
+
+.realm-label {
+  display: none;
+}
+
+.prov-label__name {
+  fill: #2a2118;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.045em;
+  stroke: rgba(244, 233, 204, 0.96);
+  stroke-width: 4.2px;
+  stroke-linejoin: round;
+  paint-order: stroke fill;
+  filter: drop-shadow(0 1px 1px rgba(40, 29, 17, 0.18));
+}
+
+.prov-label--selected .prov-label__name {
+  fill: #641f1c;
+  stroke: #f8e8c4;
+  stroke-width: 4.6px;
+}
+
+.glyph {
+  stroke: #493923;
+  stroke-width: 1.35;
+  opacity: 0.72;
+}
+
+.glyph__shade { opacity: 0.44; }
+
+.prov-outline {
+  stroke: #f0cf79;
+  stroke-width: 3.4;
+  filter: drop-shadow(0 0 3px rgba(98, 69, 25, 0.72));
+}
+
+.prov-hover {
+  stroke: rgba(241, 207, 125, 0.92);
+  stroke-width: 2;
+  stroke-dasharray: 5 4;
+}
+
+.map-frame {
+  stroke: #55432a;
+  stroke-width: 2.2;
+}
+
+.map-frame--inner {
+  stroke: #9b8152;
+  stroke-width: 0.8;
+  opacity: 0.72;
+}
+
+.atlas__legend {
+  right: 18px;
+  bottom: 16px;
+  gap: 5px 13px;
+  max-width: min(72%, 610px);
+  padding: 7px 12px;
+  color: #332719;
+  font-size: 0.84rem;
+  background: linear-gradient(180deg, rgba(248, 238, 211, 0.96), rgba(220, 202, 162, 0.96));
+  border: 1px solid rgba(107, 80, 43, 0.6);
+  box-shadow: 0 3px 9px rgba(35, 24, 13, 0.24), inset 0 1px 0 rgba(255, 250, 227, 0.72);
+}
+
+.legend__swatch {
+  width: 10px;
+  height: 10px;
+  border-color: rgba(42, 29, 20, 0.58);
+}
+
+.atlas__hint {
+  top: 14px;
+  padding: 5px 16px;
+  color: #49341e;
+  font-size: 0.88rem;
+  background: linear-gradient(180deg, rgba(250, 242, 220, 0.96), rgba(232, 216, 181, 0.96));
+  border: 1px solid rgba(129, 99, 51, 0.52);
+  box-shadow: 0 2px 5px rgba(45, 31, 17, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 1000px) {
+  .atlas__legend { max-width: none; }
+  .prov-label__name { font-size: 15px; }
+}
