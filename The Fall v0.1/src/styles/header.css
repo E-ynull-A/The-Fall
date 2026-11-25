@@ -860,3 +860,24 @@
   .hdr .topbar__year-value { font-size: 1.35rem; }
   .hdr__ribbon { max-width: 154px; min-height: 20px; padding: 3px 10px; font-size: 0.62rem; }
 }
+
+
+/* Keep the chronicle's full stack comfortably inside the fixed royal bar. */
+.hdr__chronicle { padding-top: 3px; padding-bottom: 3px; }
+.hdr__chronicle::before { margin-bottom: 3px; }
+.hdr__chronicle::after { margin-top: 3px; }
+.hdr .topbar__year-label { margin-bottom: 2px; font-size: clamp(0.58rem, 0.66vw, 0.69rem); }
+.hdr .topbar__year-value {
+  margin-bottom: 3px;
+  font-size: clamp(1.82rem, 2.05vw, 2.15rem);
+  line-height: 0.92;
+}
+.hdr__ribbon {
+  min-height: 21px;
+  padding: 2px 14px;
+  font-size: clamp(0.66rem, 0.72vw, 0.76rem);
+}
+@media (max-width: 1440px) {
+  .hdr .topbar__year-value { font-size: clamp(1.68rem, 1.95vw, 2rem); }
+  .hdr__ribbon { min-height: 20px; padding-top: 2px; padding-bottom: 2px; }
+}
