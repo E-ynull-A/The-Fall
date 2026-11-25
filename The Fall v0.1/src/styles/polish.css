@@ -1779,3 +1779,106 @@ body {
   stroke: #d1b77c;
   opacity: 0.72;
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   D MAP — exact supplied artwork with live province overlays
+   ═══════════════════════════════════════════════════════════════ */
+.atlas {
+  background: #09272a;
+}
+.atlas-map {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #09272a;
+  filter: saturate(1.04) contrast(1.02) drop-shadow(0 4px 10px rgba(0,0,0,.35));
+}
+.map-artwork {
+  opacity: 1;
+  image-rendering: auto;
+}
+.sea { fill: #0b2b30; }
+.land { display: none; }
+
+.prov {
+  fill-opacity: 0.025;
+  stroke: none;
+  cursor: pointer;
+  transition: fill-opacity 150ms ease, filter 150ms ease;
+}
+.prov--player { fill-opacity: 0.025; }
+.prov--owner-changed { fill-opacity: 0.54; }
+.prov--neighbor { fill-opacity: 0.11; }
+.prov:hover,
+.prov:focus-visible { fill-opacity: 0.2; }
+.prov--selected,
+.prov--selected:hover {
+  fill-opacity: 0.3;
+}
+.prov--target { fill-opacity: 0.22; }
+.prov--dim { fill-opacity: 0.012; }
+
+.border { opacity: 0.08; }
+.border--province { opacity: 0.06; }
+.border--realm,
+.border--realm-halo { opacity: 0.08; }
+
+.prov-hover {
+  fill: rgba(255, 231, 167, 0.08);
+  stroke: #f2d47e;
+  stroke-width: 2.4;
+  stroke-dasharray: 5 3;
+  filter: drop-shadow(0 0 3px rgba(70, 46, 16, 0.55));
+}
+.prov-outline {
+  fill: rgba(255, 224, 139, 0.11);
+  stroke: #ffe19a;
+  stroke-width: 3.1;
+  filter: drop-shadow(0 0 4px rgba(39, 28, 12, 0.7));
+}
+
+.prov-label__plaque {
+  fill: #ead7a5;
+  fill-opacity: 0.97;
+  stroke: #8b6737;
+  stroke-width: 1.2;
+  filter: drop-shadow(0 2px 2px rgba(22, 17, 11, 0.42));
+}
+.prov-label__name {
+  fill: #382719;
+  stroke: none;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.015em;
+  text-anchor: middle;
+  paint-order: normal;
+}
+.prov-label--selected .prov-label__plaque {
+  fill: #f8e8bc;
+  stroke: #e9c66e;
+  stroke-width: 1.8;
+}
+.prov-label--selected .prov-label__name { fill: #762d29; }
+
+.coast,
+.coast--shore,
+.map-frame,
+.map-frame--inner,
+.atlas-contours,
+.terrain,
+.sea__wave,
+.sea__label,
+.realm-label,
+.glyph,
+#vignette {
+  display: none;
+}
+.claim-hatch__line { opacity: 0.56; }
+
+@media (max-width: 1000px) {
+  .atlas-map { height: 100%; }
+  .prov-label__name { font-size: 16px; }
+  .prov-label__plaque { stroke-width: 1.35; }
+}

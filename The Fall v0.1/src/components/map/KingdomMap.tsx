@@ -2,12 +2,10 @@ import { tr } from '../../i18n/i18n';
 import type { KeyboardEvent } from 'react';
 import type { GameState } from '../../types/game';
 import type { ProvinceId } from '../../types/province';
-import { COASTLINE, MAP_HEIGHT, MAP_WIDTH } from '../../data/provinces/mapLayout';
+import { COASTLINE, MAP_HEIGHT, MAP_WIDTH, PROVINCE_LABEL_LAYOUT } from '../../data/provinces/mapLayout';
 import { PROVINCE_TYPES } from '../../data/provinces/provinceTypes';
+import { PROVINCES } from '../../data/provinces/provinces';
 import { MAP_GEOMETRY, polylineToPath } from '../../features/map/mapGeometry';
-import { getKingdomList } from '../../engine/selectors';
-import { CompassRose, ProvinceGlyph } from './MapGlyphs';
-import { MapScenery } from './MapScenery';
 
 interface KingdomMapProps {
   state: GameState;
@@ -36,12 +34,8 @@ function buildLandPath(): string {
   return `${d} Z`;
 }
 
-function buildCoastStroke(): string {
-  return buildLandPath();
-}
-
 const LAND_PATH = buildLandPath();
-const COAST_PATH = buildCoastStroke();
+const INITIAL_OWNER_BY_PROVINCE = Object.fromEntries(PROVINCES.map((p) => [p.id, p.ownerId])) as Record<ProvinceId, string>;
 
 /**
  * Interactive atlas. Every province is its own SVG shape bound to a Province entity.
@@ -53,17 +47,6 @@ export function KingdomMap({ state, selectedId, onSelect, hoveredId, onHover, ta
   const provinces = Object.values(state.provinces);
   const selected = selectedId ? state.provinces[selectedId] : undefined;
   const neighborIds = new Set(targetIds ? [] : (selected?.neighbors ?? []));
-
-  // Realm names are placed at the average centroid of each kingdom's provinces.
-  const realmLabels = getKingdomList(state)
-    .map((k) => {
-      const owned = provinces.filter((p) => p.ownerId === k.id);
-      if (owned.length === 0) return null;
-      const cx = owned.reduce((s, p) => s + (shapes[p.id]?.centroid.x ?? 0), 0) / owned.length;
-      const cy = owned.reduce((s, p) => s + (shapes[p.id]?.centroid.y ?? 0), 0) / owned.length;
-      return { id: k.id, name: k.shortName, x: cx, y: cy };
-    })
-    .filter((l): l is NonNullable<typeof l> => l !== null);
 
   const handleKey = (e: KeyboardEvent, id: ProvinceId) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -149,25 +132,33 @@ export function KingdomMap({ state, selectedId, onSelect, hoveredId, onHover, ta
         </radialGradient>
       </defs>
 
-      {/* Sea */}
+      {/* Supplied D-map artwork. Vector layers above it keep each province interactive. */}
       <rect width={MAP_WIDTH} height={MAP_HEIGHT} className="sea" onClick={() => onSelect(null)} />
-      <rect width={MAP_WIDTH} height={MAP_HEIGHT} fill="url(#sea-waves)" pointerEvents="none" />
-      <text className="sea__label" transform="translate(52 300) rotate(-90)">{tr('The Grey Sea')}</text>
-      <CompassRose x={66} y={572} size={34} />
+      <image
+        className="map-artwork"
+        href="/assets/river-delta-d.webp"
+        x="0"
+        y="0"
+        width={MAP_WIDTH}
+        height={MAP_HEIGHT}
+        preserveAspectRatio="none"
+        pointerEvents="none"
+      />
 
       {/* Land and provinces */}
       <g clipPath="url(#land-clip)">
-        <rect width={MAP_WIDTH} height={MAP_HEIGHT} className="land" />
         {provinces.map((p) => {
           const shape = shapes[p.id];
           const owner = state.kingdoms[p.ownerId];
           if (!shape || !owner) return null;
           const isSelected = p.id === selectedId;
+          const ownerChanged = owner.id !== INITIAL_OWNER_BY_PROVINCE[p.id];
           const classes = [
             'prov',
             isSelected && 'prov--selected',
             neighborIds.has(p.id) && 'prov--neighbor',
             owner.isPlayer && 'prov--player',
+            ownerChanged && 'prov--owner-changed',
             targets && (targets.has(p.id) ? 'prov--target' : 'prov--dim'),
           ]
             .filter(Boolean)
@@ -198,83 +189,12 @@ export function KingdomMap({ state, selectedId, onSelect, hoveredId, onHover, ta
           );
         })}
 
-        {/* Terrain texture overlay gives each province type its own look */}
-        {provinces.map((p) => (
-          <path key={`terrain-${p.id}`} d={shapes[p.id]?.path} fill={`url(#terrain-${p.type})`} className="terrain" pointerEvents="none" />
-        ))}
-
-        {/* Subtle elevation contours unify the provinces into one hand-drawn atlas. */}
-        <rect width={MAP_WIDTH} height={MAP_HEIGHT} fill="url(#atlas-contours)" className="atlas-contours" pointerEvents="none" />
-
-        <MapScenery />
-
-        {/* The King's River descends from the eastern highlands and fans into four delta channels. */}
-        <g className="river-system" clipPath="url(#land-clip)" pointerEvents="none">
-          <path d="M 820 72 C 785 124 784 174 755 220 C 728 264 725 305 692 338 C 664 365 633 365 603 389 C 579 408 559 428 532 452" className="river__bank river__bank--main" />
-          <path d="M 820 72 C 785 124 784 174 755 220 C 728 264 725 305 692 338 C 664 365 633 365 603 389 C 579 408 559 428 532 452" className="river__water river__water--main" />
-          <path d="M 820 72 C 785 124 784 174 755 220 C 728 264 725 305 692 338 C 664 365 633 365 603 389 C 579 408 559 428 532 452" className="river__shine river__shine--main" />
-
-          <path d="M 570 108 C 584 158 601 204 609 248 C 615 293 608 339 586 389" className="river__bank river__bank--tributary" />
-          <path d="M 570 108 C 584 158 601 204 609 248 C 615 293 608 339 586 389" className="river__water river__water--tributary" />
-          <path d="M 570 108 C 584 158 601 204 609 248 C 615 293 608 339 586 389" className="river__shine river__shine--tributary" />
-
-          <path d="M 306 284 C 333 318 370 343 409 358 C 445 372 471 384 503 399 C 517 412 525 431 532 452" className="river__bank river__bank--tributary" />
-          <path d="M 306 284 C 333 318 370 343 409 358 C 445 372 471 384 503 399 C 517 412 525 431 532 452" className="river__water river__water--tributary" />
-          <path d="M 306 284 C 333 318 370 343 409 358 C 445 372 471 384 503 399 C 517 412 525 431 532 452" className="river__shine river__shine--tributary" />
-
-          <path d="M 532 452 C 495 431 469 418 433 425 C 395 434 371 462 338 483 C 302 505 266 521 237 543 C 224 553 217 559 211 550" className="river__bank river__bank--channel" />
-          <path d="M 532 452 C 495 431 469 418 433 425 C 395 434 371 462 338 483 C 302 505 266 521 237 543 C 224 553 217 559 211 550" className="river__water river__water--channel" />
-          <path d="M 532 452 C 495 431 469 418 433 425 C 395 434 371 462 338 483 C 302 505 266 521 237 543 C 224 553 217 559 211 550" className="river__shine river__shine--channel" />
-
-          <path d="M 520 458 C 494 477 471 506 457 536 C 443 565 424 597 407 626" className="river__bank river__bank--channel" />
-          <path d="M 520 458 C 494 477 471 506 457 536 C 443 565 424 597 407 626" className="river__water river__water--channel" />
-          <path d="M 520 458 C 494 477 471 506 457 536 C 443 565 424 597 407 626" className="river__shine river__shine--channel" />
-
-          <path d="M 535 458 C 559 482 578 510 585 541 C 592 571 596 604 602 630" className="river__bank river__bank--channel" />
-          <path d="M 535 458 C 559 482 578 510 585 541 C 592 571 596 604 602 630" className="river__water river__water--channel" />
-          <path d="M 535 458 C 559 482 578 510 585 541 C 592 571 596 604 602 630" className="river__shine river__shine--channel" />
-
-          <path d="M 552 450 C 614 434 666 447 711 473 C 757 500 793 550 825 594" className="river__bank river__bank--channel" />
-          <path d="M 552 450 C 614 434 666 447 711 473 C 757 500 793 550 825 594" className="river__water river__water--channel" />
-          <path d="M 552 450 C 614 434 666 447 711 473 C 757 500 793 550 825 594" className="river__shine river__shine--channel" />
-
-          {/* Low marsh islands between the distributaries. */}
-          <path d="M 344 492 C 361 480 382 486 390 501 C 379 517 359 524 343 513 Z" className="delta-marsh" />
-          <path d="M 452 548 C 468 535 490 541 496 557 C 483 571 464 576 448 563 Z" className="delta-marsh" />
-          <path d="M 626 511 C 644 498 664 505 670 521 C 657 537 639 541 624 527 Z" className="delta-marsh" />
-          <path d="M 735 505 C 752 492 772 500 778 516 C 764 531 746 537 731 522 Z" className="delta-marsh" />
-          <ellipse cx="211" cy="550" rx="18" ry="10" className="river-mouth" />
-          <ellipse cx="407" cy="626" rx="19" ry="10" className="river-mouth" />
-          <ellipse cx="602" cy="630" rx="22" ry="11" className="river-mouth" />
-          <ellipse cx="825" cy="594" rx="20" ry="10" className="river-mouth" />
-        </g>
-
         {/* Ancestral claims: lands that were Ardenhal's but are held by others */}
         {provinces
           .filter((p) => p.historicalOwnerId === state.playerKingdomId && p.ownerId !== state.playerKingdomId)
           .map((p) => (
             <path key={`claim-${p.id}`} d={shapes[p.id]?.path} fill="url(#claim-hatch)" pointerEvents="none" />
           ))}
-
-        <rect width={MAP_WIDTH} height={MAP_HEIGHT} filter="url(#paper-grain)" pointerEvents="none" />
-
-        {/* Borders: thin between provinces of one realm, heavy between realms */}
-        {borders.map((b) => {
-          const a = state.provinces[b.a];
-          const c = state.provinces[b.b];
-          const realmBorder = a && c && a.ownerId !== c.ownerId;
-          return (
-            <g key={`${b.a}|${b.b}`} pointerEvents="none">
-              {realmBorder && (
-                <path d={polylineToPath(b.points)} className="border border--realm-halo" />
-              )}
-              <path
-                d={polylineToPath(b.points)}
-                className={realmBorder ? 'border border--realm' : 'border border--province'}
-              />
-            </g>
-          );
-        })}
 
         {/* Hover outline */}
         {hoveredId && hoveredId !== selectedId && shapes[hoveredId] && (
@@ -287,35 +207,29 @@ export function KingdomMap({ state, selectedId, onSelect, hoveredId, onHover, ta
         )}
       </g>
 
-      {/* Coastline: heavy ink line with an offset shore line */}
-      <path d={COAST_PATH} className="coast coast--shore" pointerEvents="none" />
-      <path d={COAST_PATH} className="coast" pointerEvents="none" />
-
-      {/* Realm names */}
-      {realmLabels.map((l) => (
-        <text key={`realm-${l.id}`} x={l.x} y={l.y - 52} className="realm-label" pointerEvents="none">
-          {tr(l.name)}
-        </text>
-      ))}
-
-      {/* Province labels and glyphs */}
+      {/* Localized labels are redrawn on top of the artwork's retouched name plaques. */}
       {provinces.map((p) => {
-        const shape = shapes[p.id];
-        if (!shape) return null;
-        const { x, y } = shape.centroid;
+        const label = PROVINCE_LABEL_LAYOUT[p.id];
+        if (!label) return null;
+        const { x, y, width } = label;
+        const name = tr(p.name);
         return (
           <g
             key={`label-${p.id}`}
             className={`prov-label ${p.id === selectedId ? 'prov-label--selected' : ''}`}
             pointerEvents="none"
           >
-            <ProvinceGlyph type={p.type} x={x} y={y - 16} />
-            <text x={x} y={y + 14} className="prov-label__name">
-              {p.isCapital ? '♛ ' : ''}
-              {tr(p.name)}
-            </text>
+            <rect
+              className="prov-label__plaque"
+              x={x - width / 2}
+              y={y - 13}
+              width={width}
+              height="26"
+              rx="7"
+            />
+            <text x={x} y={y + 5} className="prov-label__name">{name}</text>
             {state.sieges.some((s) => s.provinceId === p.id) && (
-              <g className="siege-marker" transform={`translate(${x + 30} ${y - 22})`}>
+              <g className="siege-marker" transform={`translate(${x + width / 2 + 9} ${y - 14})`}>
                 <title>{tr('Under siege')}</title>
                 <circle r="10" />
                 <path d="M-5 -5 L5 5 M5 -5 L-5 5" />
@@ -324,10 +238,6 @@ export function KingdomMap({ state, selectedId, onSelect, hoveredId, onHover, ta
           </g>
         );
       })}
-
-      <rect width={MAP_WIDTH} height={MAP_HEIGHT} fill="url(#vignette)" pointerEvents="none" />
-      <rect x="4" y="4" width={MAP_WIDTH - 8} height={MAP_HEIGHT - 8} className="map-frame" pointerEvents="none" />
-      <rect x="10" y="10" width={MAP_WIDTH - 20} height={MAP_HEIGHT - 20} className="map-frame map-frame--inner" pointerEvents="none" />
     </svg>
   );
 }
