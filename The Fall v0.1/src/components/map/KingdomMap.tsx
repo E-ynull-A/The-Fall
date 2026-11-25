@@ -205,6 +205,47 @@ export function KingdomMap({ state, selectedId, onSelect, hoveredId, onHover, ta
         {/* Subtle elevation contours unify the provinces into one hand-drawn atlas. */}
         <rect width={MAP_WIDTH} height={MAP_HEIGHT} fill="url(#atlas-contours)" className="atlas-contours" pointerEvents="none" />
 
+        {/* The King's River descends from the eastern highlands and fans into four delta channels. */}
+        <g className="river-system" clipPath="url(#land-clip)" pointerEvents="none">
+          <path d="M 820 72 C 785 124 784 174 755 220 C 728 264 725 305 692 338 C 664 365 633 365 603 389 C 579 408 559 428 532 452" className="river__bank river__bank--main" />
+          <path d="M 820 72 C 785 124 784 174 755 220 C 728 264 725 305 692 338 C 664 365 633 365 603 389 C 579 408 559 428 532 452" className="river__water river__water--main" />
+          <path d="M 820 72 C 785 124 784 174 755 220 C 728 264 725 305 692 338 C 664 365 633 365 603 389 C 579 408 559 428 532 452" className="river__shine river__shine--main" />
+
+          <path d="M 570 108 C 584 158 601 204 609 248 C 615 293 608 339 586 389" className="river__bank river__bank--tributary" />
+          <path d="M 570 108 C 584 158 601 204 609 248 C 615 293 608 339 586 389" className="river__water river__water--tributary" />
+          <path d="M 570 108 C 584 158 601 204 609 248 C 615 293 608 339 586 389" className="river__shine river__shine--tributary" />
+
+          <path d="M 306 284 C 333 318 370 343 409 358 C 445 372 471 384 503 399 C 517 412 525 431 532 452" className="river__bank river__bank--tributary" />
+          <path d="M 306 284 C 333 318 370 343 409 358 C 445 372 471 384 503 399 C 517 412 525 431 532 452" className="river__water river__water--tributary" />
+          <path d="M 306 284 C 333 318 370 343 409 358 C 445 372 471 384 503 399 C 517 412 525 431 532 452" className="river__shine river__shine--tributary" />
+
+          <path d="M 532 452 C 495 431 469 418 433 425 C 395 434 371 462 338 483 C 302 505 266 521 237 543 C 224 553 217 559 211 550" className="river__bank river__bank--channel" />
+          <path d="M 532 452 C 495 431 469 418 433 425 C 395 434 371 462 338 483 C 302 505 266 521 237 543 C 224 553 217 559 211 550" className="river__water river__water--channel" />
+          <path d="M 532 452 C 495 431 469 418 433 425 C 395 434 371 462 338 483 C 302 505 266 521 237 543 C 224 553 217 559 211 550" className="river__shine river__shine--channel" />
+
+          <path d="M 520 458 C 494 477 471 506 457 536 C 443 565 424 597 407 626" className="river__bank river__bank--channel" />
+          <path d="M 520 458 C 494 477 471 506 457 536 C 443 565 424 597 407 626" className="river__water river__water--channel" />
+          <path d="M 520 458 C 494 477 471 506 457 536 C 443 565 424 597 407 626" className="river__shine river__shine--channel" />
+
+          <path d="M 535 458 C 559 482 578 510 585 541 C 592 571 596 604 602 630" className="river__bank river__bank--channel" />
+          <path d="M 535 458 C 559 482 578 510 585 541 C 592 571 596 604 602 630" className="river__water river__water--channel" />
+          <path d="M 535 458 C 559 482 578 510 585 541 C 592 571 596 604 602 630" className="river__shine river__shine--channel" />
+
+          <path d="M 552 450 C 614 434 666 447 711 473 C 757 500 793 550 825 594" className="river__bank river__bank--channel" />
+          <path d="M 552 450 C 614 434 666 447 711 473 C 757 500 793 550 825 594" className="river__water river__water--channel" />
+          <path d="M 552 450 C 614 434 666 447 711 473 C 757 500 793 550 825 594" className="river__shine river__shine--channel" />
+
+          {/* Low marsh islands between the distributaries. */}
+          <path d="M 344 492 C 361 480 382 486 390 501 C 379 517 359 524 343 513 Z" className="delta-marsh" />
+          <path d="M 452 548 C 468 535 490 541 496 557 C 483 571 464 576 448 563 Z" className="delta-marsh" />
+          <path d="M 626 511 C 644 498 664 505 670 521 C 657 537 639 541 624 527 Z" className="delta-marsh" />
+          <path d="M 735 505 C 752 492 772 500 778 516 C 764 531 746 537 731 522 Z" className="delta-marsh" />
+          <ellipse cx="211" cy="550" rx="18" ry="10" className="river-mouth" />
+          <ellipse cx="407" cy="626" rx="19" ry="10" className="river-mouth" />
+          <ellipse cx="602" cy="630" rx="22" ry="11" className="river-mouth" />
+          <ellipse cx="825" cy="594" rx="20" ry="10" className="river-mouth" />
+        </g>
+
         {/* Ancestral claims: lands that were Ardenhal's but are held by others */}
         {provinces
           .filter((p) => p.historicalOwnerId === state.playerKingdomId && p.ownerId !== state.playerKingdomId)

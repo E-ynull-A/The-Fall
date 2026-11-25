@@ -11,34 +11,37 @@ export const MAP_HEIGHT = 650;
 
 /** Province seat (map coordinates, origin top-left). */
 export const PROVINCE_SEATS: Record<ProvinceId, { x: number; y: number }> = {
-  gullhaven: { x: 175, y: 165 },
-  saltmere: { x: 175, y: 380 },
-  brightwater: { x: 320, y: 500 },
-  ambermoor: { x: 330, y: 235 },
-  ardenhal_crown: { x: 480, y: 380 },
-  thornfield: { x: 545, y: 165 },
-  greenvale: { x: 545, y: 545 },
-  highwatch: { x: 660, y: 340 },
-  grimpass: { x: 720, y: 140 },
-  ironridge: { x: 730, y: 545 },
-  draven_hold: { x: 860, y: 320 },
-  copperdeep: { x: 880, y: 540 },
+  gullhaven: { x: 145, y: 260 },
+  saltmere: { x: 205, y: 365 },
+  brightwater: { x: 350, y: 530 },
+  ambermoor: { x: 310, y: 285 },
+  ardenhal_crown: { x: 495, y: 385 },
+  thornfield: { x: 570, y: 130 },
+  greenvale: { x: 570, y: 560 },
+  highwatch: { x: 695, y: 350 },
+  grimpass: { x: 820, y: 110 },
+  ironridge: { x: 755, y: 560 },
+  draven_hold: { x: 880, y: 320 },
+  copperdeep: { x: 905, y: 540 },
 };
 
 /**
- * Full outer coastline, clockwise from the north-west cape.
- * The 12 province seats remain inland; only the landmass silhouette changes.
- * The result is a broad, irregular island with a northern shoulder, eastern
- * headlands and a hooked south-western coast rather than a rectangular land edge.
+ * The 12-province river-delta coast, clockwise from the north-west cape.
+ * Four broad estuary mouths indent the southern shore and create distinct
+ * marshy peninsulas. The province seats remain safely inland.
  */
 export const COASTLINE: readonly [number, number][] = [
   [180, 54], [236, 26], [310, 34], [382, 17], [450, 31], [526, 18],
   [600, 30], [676, 17], [748, 29], [818, 38], [880, 68], [927, 112],
   [958, 160], [944, 207], [969, 252], [949, 299], [965, 345], [944, 390],
-  [956, 434], [940, 478], [925, 516], [908, 554], [873, 584], [835, 609],
-  [790, 625], [744, 639], [698, 629], [650, 644], [604, 632], [556, 645],
-  [510, 632], [462, 642], [414, 629], [367, 638], [323, 620], [283, 608],
-  [245, 580], [211, 550], [178, 516], [148, 481], [125, 443], [105, 405],
-  [94, 365], [107, 328], [92, 290], [103, 253], [111, 216], [124, 181],
-  [128, 145], [146, 108],
+  [956, 434], [940, 478], [925, 516], [910, 540], [890, 555], [875, 535],
+  [860, 548], [842, 578], [825, 594], [808, 578], [793, 550], [775, 540],
+  [760, 556], [748, 582], [735, 607], [716, 618], [700, 602], [686, 578],
+  [670, 566], [652, 578], [638, 602], [621, 624], [602, 630], [586, 612],
+  [575, 586], [558, 577], [542, 592], [526, 615], [510, 630], [492, 615],
+  [478, 590], [460, 578], [442, 590], [425, 612], [407, 626], [388, 611],
+  [372, 588], [354, 580], [337, 593], [320, 606], [300, 590], [282, 570],
+  [262, 558], [244, 568], [226, 562], [211, 550], [178, 516], [148, 481],
+  [125, 443], [105, 405], [94, 365], [107, 328], [92, 290], [103, 253],
+  [111, 216], [124, 181], [128, 145], [146, 108],
 ];
