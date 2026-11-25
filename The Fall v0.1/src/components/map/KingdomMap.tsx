@@ -87,6 +87,21 @@ export function KingdomMap({ state, selectedId, onSelect, hoveredId, onHover, ta
       aria-label={tr('Map of the known realms')}
     >
       <defs>
+        <linearGradient id="sea-gradient" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#c1c2aa" />
+          <stop offset="0.48" stopColor="#aeb59f" />
+          <stop offset="1" stopColor="#929f91" />
+        </linearGradient>
+        <linearGradient id="parchment-gradient" x1="0" y1="0" x2="0.9" y2="1">
+          <stop offset="0" stopColor="#f0e5c8" />
+          <stop offset="0.52" stopColor="#e5d4ad" />
+          <stop offset="1" stopColor="#d8c49a" />
+        </linearGradient>
+        <pattern id="atlas-contours" width="118" height="92" patternUnits="userSpaceOnUse">
+          <path d="M-16 25 C8 7 28 7 48 23 S88 42 132 16" className="contour-line" />
+          <path d="M-18 34 C8 16 30 17 49 32 S88 52 132 26" className="contour-line contour-line--inner" />
+          <path d="M-14 70 C10 52 35 51 58 66 S98 83 130 61" className="contour-line contour-line--inner" />
+        </pattern>
         <clipPath id="land-clip">
           <path d={LAND_PATH} />
         </clipPath>
@@ -106,30 +121,33 @@ export function KingdomMap({ state, selectedId, onSelect, hoveredId, onHover, ta
           />
         </filter>
         {/* Terrain textures, one per province type (subtle) */}
-        <pattern id="terrain-fertile_lands" width="34" height="24" patternUnits="userSpaceOnUse" patternTransform="rotate(-8)">
-          <path d="M0 18 C9 16 20 20 34 17" className="terrain-line" />
-          <path d="M7 18 v-5 M17 18 v-7 M27 18 v-5" className="terrain-line terrain-line--faint" />
-          <path d="M2 5 h8 M20 7 h9" className="terrain-line terrain-line--faint" />
+        <pattern id="terrain-fertile_lands" width="54" height="42" patternUnits="userSpaceOnUse" patternTransform="rotate(-7)">
+          <path d="M-4 12 C12 7 28 8 58 12 M-4 22 C14 17 34 18 58 22 M-4 32 C14 27 34 28 58 32" className="terrain-line" />
+          <path d="M9 12 v-5 M24 22 v-6 M42 32 v-5" className="terrain-line terrain-line--faint" />
         </pattern>
-        <pattern id="terrain-mountain_pass" width="46" height="34" patternUnits="userSpaceOnUse">
-          <path d="M3 27 L14 10 L25 27 M21 27 L31 15 L43 27" className="terrain-line" />
-          <path d="M11 15 L14 10 L18 16 M28 19 L31 15 L35 20" className="terrain-line terrain-line--faint" />
+        <pattern id="terrain-mountain_pass" width="72" height="58" patternUnits="userSpaceOnUse">
+          <path d="M4 47 L22 17 L40 47 M30 47 L48 25 L67 47" className="terrain-line" />
+          <path d="M16 27 L22 17 L29 29 M42 33 L48 25 L54 34" className="terrain-line terrain-line--faint" />
+          <path d="M0 51 H72" className="terrain-line terrain-line--faint" />
         </pattern>
-        <pattern id="terrain-coastal_port" width="42" height="26" patternUnits="userSpaceOnUse">
-          <path d="M1 8 q10 -7 20 0 t20 0 M-12 20 q10 -7 20 0 t20 0" className="terrain-line" />
+        <pattern id="terrain-coastal_port" width="58" height="42" patternUnits="userSpaceOnUse">
+          <path d="M-4 12 q14 -9 28 0 t28 0 M-4 29 q14 -9 28 0 t28 0" className="terrain-line" />
+          <path d="M13 20 h13 M39 37 h12" className="terrain-line terrain-line--faint" />
         </pattern>
-        <pattern id="terrain-mining_region" width="38" height="32" patternUnits="userSpaceOnUse">
-          <path d="M5 23 L16 8 L27 23 Z" className="terrain-line terrain-line--faint" />
-          <path d="M16 8 L20 14" className="terrain-line" />
-          <circle cx="16" cy="18" r="1.4" className="terrain-dot" />
+        <pattern id="terrain-mining_region" width="62" height="52" patternUnits="userSpaceOnUse">
+          <path d="M8 37 L23 13 L38 37 Z M23 13 L29 23 L35 19" className="terrain-line" />
+          <path d="M16 37 L23 25 L30 37" className="terrain-line terrain-line--faint" />
+          <circle cx="23" cy="31" r="1.5" className="terrain-dot" />
         </pattern>
-        <pattern id="terrain-city" width="30" height="26" patternUnits="userSpaceOnUse">
-          <path d="M3 21 V10 H10 V21 M13 21 V5 H21 V21 M24 21 V12 H28 V21" className="terrain-line terrain-line--faint" />
-          <path d="M3 10 L6.5 7 L10 10 M13 5 L17 2 L21 5" className="terrain-line terrain-line--faint" />
+        <pattern id="terrain-city" width="58" height="48" patternUnits="userSpaceOnUse">
+          <path d="M8 38 V21 H19 V38 M23 38 V12 H38 V38 M42 38 V25 H51 V38" className="terrain-line" />
+          <path d="M8 21 L13.5 16 L19 21 M23 12 L30.5 6 L38 12" className="terrain-line terrain-line--faint" />
+          <path d="M13 27 V32 M29 19 V25 M34 19 V25 M45 30 V34" className="terrain-line terrain-line--faint" />
         </pattern>
-        <pattern id="terrain-castle" width="36" height="30" patternUnits="userSpaceOnUse">
-          <path d="M4 24 V11 H8 V15 H13 V11 H17 V15 H22 V11 H27 V24 Z" className="terrain-line terrain-line--faint" />
-          <path d="M8 11 V7 H13 V11 M17 11 V6 H22 V11" className="terrain-line terrain-line--faint" />
+        <pattern id="terrain-castle" width="66" height="54" patternUnits="userSpaceOnUse">
+          <path d="M12 42 V21 H19 V27 H26 V21 H33 V27 H40 V21 H47 V42 Z" className="terrain-line" />
+          <path d="M19 21 V14 H26 V21 M33 21 V12 H40 V21" className="terrain-line terrain-line--faint" />
+          <path d="M26 42 V32 C26 26 33 26 33 32 V42" className="terrain-line terrain-line--faint" />
         </pattern>
         <radialGradient id="vignette" cx="50%" cy="50%" r="75%">
           <stop offset="60%" stopColor="#5a4430" stopOpacity="0" />
@@ -191,6 +209,9 @@ export function KingdomMap({ state, selectedId, onSelect, hoveredId, onHover, ta
           <path key={`terrain-${p.id}`} d={shapes[p.id]?.path} fill={`url(#terrain-${p.type})`} className="terrain" pointerEvents="none" />
         ))}
 
+        {/* Subtle elevation contours unify the provinces into one hand-drawn atlas. */}
+        <rect width={MAP_WIDTH} height={MAP_HEIGHT} fill="url(#atlas-contours)" className="atlas-contours" pointerEvents="none" />
+
         {/* Ancestral claims: lands that were Ardenhal's but are held by others */}
         {provinces
           .filter((p) => p.historicalOwnerId === state.playerKingdomId && p.ownerId !== state.playerKingdomId)
@@ -206,12 +227,15 @@ export function KingdomMap({ state, selectedId, onSelect, hoveredId, onHover, ta
           const c = state.provinces[b.b];
           const realmBorder = a && c && a.ownerId !== c.ownerId;
           return (
-            <path
-              key={`${b.a}|${b.b}`}
-              d={polylineToPath(b.points)}
-              className={realmBorder ? 'border border--realm' : 'border border--province'}
-              pointerEvents="none"
-            />
+            <g key={`${b.a}|${b.b}`} pointerEvents="none">
+              {realmBorder && (
+                <path d={polylineToPath(b.points)} className="border border--realm-halo" />
+              )}
+              <path
+                d={polylineToPath(b.points)}
+                className={realmBorder ? 'border border--realm' : 'border border--province'}
+              />
+            </g>
           );
         })}
 
