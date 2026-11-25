@@ -19,6 +19,38 @@ const TARGET_SHORT: Record<CardTargetKind, string> = {
 
 const RARITY_LABEL = { common: 'Common', uncommon: 'Uncommon', rare: 'Rare' } as const;
 
+/** Maps each decree to one of the supplied royal illustration tiles. */
+const CARD_ART: Record<string, string> = {
+  tax_reform: 'taxes',
+  recruit_knights: 'army',
+  suppress_revolt: 'army',
+  open_royal_granaries: 'farms',
+  purchase_grain: 'farms',
+  raise_levy: 'army',
+  siege_preparations: 'fortress',
+  noble_negotiations: 'lord',
+  spy_network: 'lord',
+  emergency_tax: 'taxes',
+  royal_audience: 'king',
+  harvest_festival: 'farms',
+  debase_coinage: 'taxes',
+  sell_crown_lands: 'taxes',
+  trade_charter: 'trade',
+  hire_mercenaries: 'army',
+  fortify_border: 'fortress',
+  local_charter: 'lady',
+  royal_progress: 'king',
+  sabotage: 'rebellion',
+  incite_unrest: 'rebellion',
+  bribe_officials: 'lord',
+  grain_requisition: 'farms',
+  pardon_rebels: 'rebellion',
+  drill_the_host: 'army',
+  marriage_alliance: 'alliance',
+  monastic_granaries: 'bishop',
+  war_council: 'fortress',
+};
+
 /** Small engraved icon for each card category. */
 export function CategoryIcon({ category }: { category: CardCategory }) {
   const common = {
@@ -106,6 +138,7 @@ export function CardView({ card, selected = false, playable = true, onSelect }: 
       onClick={onSelect}
       onKeyDown={onKey}
     >
+      <div className={`card__art card__art--${CARD_ART[card.id] ?? 'banners'}`} aria-hidden="true" />
       <header className="card__header">
         <span className="card__category">
           <CategoryIcon category={card.category} />

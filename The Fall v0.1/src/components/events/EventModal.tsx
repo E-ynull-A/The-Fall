@@ -11,6 +11,20 @@ import { effectLines } from '../cards/formatCard';
 import { RESOURCE_LABELS } from '../resources/ResourceStat';
 import { Modal } from '../common/Modal';
 
+const EVENT_ART: Record<string, string> = {
+  bread_crisis: 'famine',
+  drought: 'farms',
+  plague: 'plague',
+  noble_conspiracy: 'lord',
+  religious_conflict: 'bishop',
+  corruption: 'taxes',
+  peasant_rebellion: 'rebellion',
+  sea_raiders: 'trade',
+  trade_crisis: 'trade',
+  desertion: 'army',
+  bountiful_harvest: 'farms',
+};
+
 /** A crisis or opportunity that demands a decision before the year can end. */
 export function EventModal({ state, event, dispatch }: { state: GameState; event: ActiveEvent; dispatch: Dispatch<GameAction> }) {
   const def = getEventDefinition(event.definitionId);
@@ -23,6 +37,7 @@ export function EventModal({ state, event, dispatch }: { state: GameState; event
       subtitle={`Anno Domini ${state.year}${remaining > 1 ? ` · ${remaining} matters await you` : ''}`}
       tone="grave"
     >
+      <div className={`event__art event__art--${EVENT_ART[event.definitionId] ?? 'scroll'}`} aria-hidden="true" />
       <p className="event__text">{eventText(state, event, tr(def.description))}</p>
       <div className="event__choices">
         {def.choices.map((choice) => {

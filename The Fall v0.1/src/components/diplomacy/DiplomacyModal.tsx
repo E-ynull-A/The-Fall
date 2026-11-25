@@ -22,9 +22,11 @@ export function DiplomacyModal({ state, dispatch, onClose, bare = false }: { sta
         const relation = getRelation(state, player.id, k.id);
         if (!relation) return null;
         const ratio = player.resources.military / Math.max(1, k.resources.military);
+        const portrait = k.id === 'draven' ? 'lord' : 'lady';
         return (
           <section key={k.id} className="court" style={{ ['--realm' as string]: k.color }}>
             <header className="court__head">
+              <span className={`court__portrait court__portrait--${portrait}`} aria-hidden="true" />
               <h3 className="court__name">{tr(k.name)}</h3>
               <span className={`court__stance court__stance--${relation.stance}`}>
                 {tr(k.isEliminated ? 'Fallen' : STANCE[relation.stance])}
