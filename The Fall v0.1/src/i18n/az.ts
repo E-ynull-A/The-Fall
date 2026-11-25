@@ -785,6 +785,26 @@ const RES: Record<string, string> = {
   legitimacy: 'legitimlik',
 };
 
+/** Pick the Azerbaijani ordinal suffix for a reign year. */
+function azOrdinalSuffix(raw: string): string {
+  const value = Number(raw);
+  const lastDigit = value % 10;
+  const lastTwo = value % 100;
+
+  if (lastDigit !== 0) {
+    const suffixes: Record<number, string> = {
+      1: 'ci', 2: 'ci', 3: 'cü', 4: 'cü', 5: 'ci',
+      6: 'cı', 7: 'ci', 8: 'ci', 9: 'cu',
+    };
+    return suffixes[lastDigit] ?? 'cu';
+  }
+
+  if (lastTwo === 10 || lastTwo === 30) return 'cu';
+  if ([20, 50, 70, 80].includes(lastTwo)) return 'ci';
+  if ([40, 60, 90].includes(lastTwo)) return 'cı';
+  return 'cü';
+}
+
 /** Dynamic messages: regex → Azerbaijani. `t` translates embedded fragments. */
 export const AZ_PATTERNS: Pattern[] = [
   // "+3 Gold", "−2 province stability", "+30% siege assault"
@@ -795,7 +815,7 @@ export const AZ_PATTERNS: Pattern[] = [
   [/^after (\d+) years? of rule$/, (m) => `${m[1]} illik hökmranlıqdan sonra`],
   [/^(\d+) years? of rule$/, (m) => `${m[1]} illik hökmranlıq`],
   [/^the game also saves itself at every End Year$/, () => 'oyun hər "İli bitir"də özü də yaddaşa yazılır'],
-  [/^Year (\d+) of your reign$/, (m) => `Hökmranlığınızın ${m[1]}. ili`],
+  [/^Year (\\d+) of your reign$/, (m) => `Hökmranlığınızın ${m[1]}-${azOrdinalSuffix(m[1]!)} ili`],
   [/^Scenario · ends after (\d+)$/, (m) => `Ssenari · ${m[1]}-dən sonra bitir`],
   [/^Projected for the start of (\d+)$/, (m) => `${m[1]} ilinin əvvəli üçün proqnoz`],
   [/^Close the year (\d+) and begin (\d+)$/, (m) => `${m[1]} ilini bağla, ${m[2]} ilinə başla`],
