@@ -1428,3 +1428,18 @@ body {
   }
   .event__text { min-height: 112px; }
 }
+
+
+/* The illustration sprite is intentionally compact; keep event art near its native tile size. */
+.event__art {
+  width: 112px;
+  height: 112px;
+  max-width: 38%;
+}
+.event__text {
+  min-height: 112px;
+}
+.event__art::before {
+  width: 28px;
+  height: 28px;
+}
