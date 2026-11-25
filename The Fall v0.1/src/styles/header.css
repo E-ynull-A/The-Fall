@@ -607,3 +607,142 @@
   .hdr .resource__icon { width: 25px; height: 25px; }
   .hdr .resource__icon svg { width: 15px; height: 15px; }
 }
+
+
+/* ── Final composition refinement: make the header read as a royal insignia bar ── */
+.topbar.hdr {
+  height: 92px;
+  grid-template-columns: minmax(270px, 25fr) minmax(0, 55fr) minmax(168px, 20fr);
+  padding-left: clamp(18px, 1.7vw, 30px);
+  padding-right: clamp(18px, 1.7vw, 30px);
+  background:
+    radial-gradient(ellipse at 12% 50%, rgba(126, 76, 32, 0.2), transparent 34%),
+    radial-gradient(ellipse at 50% -30%, rgba(227, 190, 112, 0.12), transparent 55%),
+    repeating-linear-gradient(90deg, transparent 0 17px, rgba(0, 0, 0, 0.055) 17px 18px),
+    linear-gradient(180deg, #3b291a 0%, #2b1c11 48%, #1b120b 100%);
+}
+
+.hdr__identity {
+  gap: 13px;
+  padding-left: 3px;
+}
+
+.hdr-banner {
+  width: 52px;
+  height: 74px;
+}
+
+.hdr__titles {
+  padding: 5px 15px 5px;
+  border-left: 1px solid rgba(215, 178, 101, 0.35);
+  border-right: 1px solid rgba(215, 178, 101, 0.13);
+}
+
+.hdr .topbar__title {
+  font-size: clamp(1.5rem, 1.95vw, 2.22rem);
+  letter-spacing: 0.2em;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.72);
+}
+
+.hdr__realm {
+  margin-top: 6px;
+}
+
+.hdr__realm-name {
+  font-size: clamp(0.9rem, 1vw, 1.08rem);
+  color: #f4e6c6;
+}
+
+.hdr__resources {
+  padding: 0 12px;
+}
+
+.hdr__resources::before,
+.hdr__resources::after {
+  top: 8px;
+  bottom: 8px;
+  background: linear-gradient(180deg, transparent, rgba(218, 182, 107, 0.55) 18%, rgba(218, 182, 107, 0.55) 82%, transparent);
+}
+
+.hdr .topbar__resources {
+  gap: clamp(8px, 0.72vw, 13px);
+}
+
+.hdr .resource {
+  height: 62px;
+  padding: 0 clamp(8px, 0.75vw, 14px);
+  border-color: rgba(197, 155, 79, 0.72);
+  background:
+    linear-gradient(135deg, rgba(255, 231, 177, 0.075), transparent 34%),
+    linear-gradient(180deg, #352519 0%, #24170e 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 233, 183, 0.16),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.6),
+    inset 0 -7px 12px rgba(0, 0, 0, 0.22),
+    0 3px 7px rgba(0, 0, 0, 0.28);
+}
+
+.hdr .resource__icon {
+  width: 36px;
+  height: 36px;
+  border-width: 1px;
+  box-shadow:
+    inset 0 1px 2px rgba(255, 239, 198, 0.14),
+    inset 0 0 0 2px rgba(0, 0, 0, 0.34),
+    0 0 0 2px rgba(201, 162, 74, 0.07),
+    0 2px 4px rgba(0, 0, 0, 0.45);
+}
+
+.hdr .resource__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.hdr .resource__label {
+  font-size: clamp(0.65rem, 0.72vw, 0.79rem);
+  letter-spacing: 0.09em;
+  color: #d8c49b;
+}
+
+.hdr .resource__value {
+  font-size: clamp(1.18rem, 1.32vw, 1.48rem);
+  color: #fff0d0;
+}
+
+.hdr__chronicle {
+  min-height: 68px;
+  border-left: 1px solid rgba(201, 162, 74, 0.26);
+  padding-left: 12px;
+}
+
+.hdr .topbar__year-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.28em;
+}
+
+.hdr .topbar__year-value {
+  font-size: clamp(1.65rem, 1.9vw, 2.05rem);
+  margin: 3px 0 6px;
+}
+
+.hdr__ribbon {
+  padding: 5px 20px;
+  font-size: clamp(0.72rem, 0.8vw, 0.88rem);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 249, 225, 0.38),
+    inset 0 -1px 0 rgba(113, 78, 33, 0.32),
+    0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 1440px) {
+  .topbar.hdr { height: 88px; grid-template-columns: minmax(235px, 24fr) minmax(0, 56fr) minmax(145px, 20fr); }
+  .hdr-banner { width: 46px; height: 66px; }
+  .hdr .resource { height: 56px; }
+  .hdr .resource__icon { width: 32px; height: 32px; }
+  .hdr .resource__icon svg { width: 20px; height: 20px; }
+}
+
+@media (max-width: 960px) {
+  .topbar.hdr { height: auto; grid-template-columns: minmax(0, 1fr) auto; }
+  .hdr__chronicle { border-left: 0; padding-left: 0; }
+}
