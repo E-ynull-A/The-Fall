@@ -1634,3 +1634,148 @@ body {
   stroke: #607e76;
   stroke-width: 1.2;
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   D · ILLUSTRATED RIVER DELTA ATLAS
+   Layered vector scenery: conifer groves, oak canopies, mountain
+   ridges, foothills, marsh reeds and fortified landmarks.
+   ═══════════════════════════════════════════════════════════════ */
+.atlas {
+  background:
+    radial-gradient(ellipse at 50% 46%, rgba(55, 94, 82, 0.2), transparent 66%),
+    linear-gradient(145deg, #142b2a 0%, #1b302c 48%, #10201f 100%);
+}
+.sea {
+  fill: #173b3d;
+}
+.sea__wave {
+  stroke: #75a49a;
+  stroke-width: 0.85;
+  opacity: 0.32;
+}
+.sea__wave--faint { opacity: 0.17; }
+.sea__label {
+  fill: #b5c8b3;
+  opacity: 0.65;
+}
+.land {
+  fill: url(#parchment-gradient);
+}
+.prov {
+  fill-opacity: 0.56;
+  transition: fill-opacity 180ms ease, filter 180ms ease;
+}
+.prov--player { fill-opacity: 0.62; }
+.prov--neighbor { fill-opacity: 0.68; }
+.prov:hover,
+.prov:focus-visible { fill-opacity: 0.74; }
+.prov--selected { fill-opacity: 0.8; }
+
+.map-scenery {
+  opacity: 1;
+  mix-blend-mode: multiply;
+}
+.scenery__hills {
+  opacity: 0.56;
+}
+.scenery__mountains {
+  opacity: 0.92;
+  filter: drop-shadow(0 2px 2px rgba(35, 34, 28, 0.24));
+}
+.scenery__forests {
+  opacity: 0.92;
+  filter: drop-shadow(0 1px 1px rgba(31, 49, 34, 0.26));
+}
+.scenery__marsh {
+  opacity: 0.78;
+}
+.scenery__forts {
+  opacity: 0.66;
+  filter: drop-shadow(0 1px 1px rgba(49, 37, 23, 0.28));
+}
+
+.river-system {
+  opacity: 1;
+  mix-blend-mode: normal;
+}
+.river__bank {
+  stroke: #526b63;
+  opacity: 0.74;
+}
+.river__water {
+  stroke: #619a9c;
+  opacity: 0.98;
+}
+.river__shine {
+  stroke: #c6d7bd;
+  opacity: 0.88;
+}
+.river__bank--main { stroke-width: 18; }
+.river__water--main { stroke-width: 11.5; }
+.river__bank--tributary { stroke-width: 12; }
+.river__water--tributary { stroke-width: 7.5; }
+.river__bank--channel { stroke-width: 13; }
+.river__water--channel { stroke-width: 8.5; }
+
+.delta-marsh {
+  fill: #87956a;
+  fill-opacity: 0.36;
+  stroke: #526d5b;
+  stroke-dasharray: 2 2;
+}
+.river-mouth {
+  fill: #6fa3a0;
+  fill-opacity: 0.78;
+  stroke: #d0d9b9;
+  stroke-width: 1;
+}
+.glyph {
+  stroke: #433923;
+  stroke-width: 1.55;
+  opacity: 0.95;
+  filter: drop-shadow(0 1px 0 rgba(243, 230, 194, 0.45));
+}
+.glyph__shade {
+  stroke: #6e7858;
+  stroke-width: 0.95;
+  opacity: 0.84;
+}
+.glyph__snow {
+  fill: #ece6cf;
+  stroke: #a9a28a;
+  stroke-width: 0.8;
+}
+.prov-label__name {
+  fill: #2f2418;
+  stroke: rgba(245, 232, 199, 0.96);
+  stroke-width: 4px;
+  paint-order: stroke fill;
+}
+.border--province {
+  stroke: #766548;
+  stroke-width: 0.9;
+  stroke-dasharray: 2.5 4.2;
+  opacity: 0.62;
+}
+.border--realm {
+  stroke: #3a291b;
+  stroke-width: 2.15;
+}
+.coast--shore {
+  stroke: #8db3a4;
+  stroke-width: 10;
+  opacity: 0.24;
+}
+.coast {
+  stroke: #493b27;
+  stroke-width: 2.4;
+}
+.map-frame {
+  stroke: #8c784e;
+  stroke-width: 2.4;
+}
+.map-frame--inner {
+  stroke: #d1b77c;
+  opacity: 0.72;
+}

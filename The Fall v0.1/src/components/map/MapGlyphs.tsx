@@ -14,46 +14,57 @@ function renderGlyph(type: ProvinceType) {
     case 'fertile_lands':
       return (
         <>
-          <path d="M-14 6 q2 -9 4 0 M-12 6 v-10 M-4 6 q2 -9 4 0 M-2 6 v-10 M6 6 q2 -9 4 0 M8 6 v-10" />
-          <path d="M-18 7 h36" />
+          <path d="M-19 8 Q-12 -2 -5 8 Q2 -2 9 8 Q15 1 20 8" />
+          <path d="M-18 12 H19 M-15 16 H16" className="glyph__shade" />
+          <path d="M-10 6 V-5 M0 6 V-8 M10 6 V-4" />
+          <path d="M-13 -2 q3 -5 6 0 M-3 -5 q3 -5 6 0 M7 -1 q3 -5 6 0" className="glyph__shade" />
         </>
       );
     case 'mountain_pass':
       return (
         <>
-          <path d="M-20 8 L-9 -10 L2 8" />
-          <path d="M-13 -3 l4 -7 l3 5" className="glyph__shade" />
-          <path d="M-2 8 L9 -6 L20 8" />
-          <path d="M-6 8 c4 -4 8 -2 12 -6" className="glyph__road" />
+          <path d="M-24 12 L-10 -12 L3 12 Z M-5 12 L11 -17 L28 12 Z" />
+          <path d="M-15 -3 L-10 -12 L-5 -4 L-10 -6 Z M5 -6 L11 -17 L18 -5 L11 -9 Z" className="glyph__snow" />
+          <path d="M-22 12 Q-7 3 4 12 Q17 3 27 12" className="glyph__shade" />
+          <path d="M-7 12 Q0 2 8 12" className="glyph__road" />
         </>
       );
     case 'mining_region':
       return (
         <>
-          <path d="M-16 8 L-4 -10 L8 8 Z" />
-          <path d="M-7 8 v-6 h6 v6" />
-          <path d="M10 -4 l10 10 M14 -8 q6 0 8 6" />
+          <path d="M-21 11 L-7 -12 L7 11 Z M-2 11 L10 -8 L24 11 Z" />
+          <path d="M-12 11 V2 Q-7 -5 -2 2 V11 Z" />
+          <path d="M8 -3 L22 10 M13 -8 L25 4 M14 -8 L8 -3" />
+          <path d="M-21 13 H25" className="glyph__shade" />
         </>
       );
     case 'city':
       return (
         <>
-          <path d="M-16 8 v-10 h6 v10 M-10 8 v-16 l4 -5 l4 5 v16 M-2 8 v-8 h8 v8 M6 8 v-12 h7 v12" />
-          <path d="M-18 8 h33" />
+          <path d="M-24 12 V-1 H-15 V12 M-13 12 V-12 L-5 -19 L3 -12 V12 M5 12 V-4 H15 V12 M17 12 V-9 H25 V12" />
+          <path d="M-13 -12 H3 M-5 -19 V-25 M-8 -25 H-2" className="glyph__shade" />
+          <path d="M-21 3 H-18 M-8 -5 H-4 M8 2 H12 M20 -3 H23" />
+          <path d="M-26 13 H27" />
         </>
       );
     case 'castle':
       return (
         <>
-          <path d="M-14 8 v-14 h3 v3 h3 v-3 h3 v3 h3 v-3 h3 v3 h3 v-3 h3 v14 Z" />
-          <path d="M-3 8 v-6 a3 3 0 0 1 6 0 v6" />
+          <path d="M-25 13 V-5 H-18 V0 H-12 V-5 H-5 V0 H2 V-5 H9 V0 H16 V-5 H23 V13 Z" />
+          <path d="M-18 -5 V-14 H-7 V-5 M2 -5 V-17 H14 V-5" />
+          <path d="M-18 -14 V-19 H-14 V-14 M-7 -14 V-19 H-3 V-14 M2 -17 V-22 H7 V-17 M14 -17 V-22 H18 V-17" />
+          <path d="M-5 13 V3 Q0 -5 5 3 V13" />
+          <path d="M-22 3 H-17 M-1 -1 H3 M18 3 H21" className="glyph__shade" />
         </>
       );
     case 'coastal_port':
       return (
         <>
-          <circle cx="0" cy="-9" r="2.5" />
-          <path d="M0 -6.5 V8 M-6 -2 h12 M-10 2 q2 7 10 6 q8 1 10 -6" />
+          <path d="M-21 7 Q0 18 21 7 L15 13 H-15 Z" />
+          <path d="M-2 5 V-17 M-2 -17 H12 L7 -10 H-2" />
+          <path d="M-8 -1 L-2 -9 L5 -1" className="glyph__shade" />
+          <path d="M-23 17 Q-15 13 -7 17 T9 17 T25 17" className="glyph__shade" />
+          <path d="M-14 1 H-7" />
         </>
       );
   }

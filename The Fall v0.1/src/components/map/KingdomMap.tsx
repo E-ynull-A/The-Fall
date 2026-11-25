@@ -7,6 +7,7 @@ import { PROVINCE_TYPES } from '../../data/provinces/provinceTypes';
 import { MAP_GEOMETRY, polylineToPath } from '../../features/map/mapGeometry';
 import { getKingdomList } from '../../engine/selectors';
 import { CompassRose, ProvinceGlyph } from './MapGlyphs';
+import { MapScenery } from './MapScenery';
 
 interface KingdomMapProps {
   state: GameState;
@@ -204,6 +205,8 @@ export function KingdomMap({ state, selectedId, onSelect, hoveredId, onHover, ta
 
         {/* Subtle elevation contours unify the provinces into one hand-drawn atlas. */}
         <rect width={MAP_WIDTH} height={MAP_HEIGHT} fill="url(#atlas-contours)" className="atlas-contours" pointerEvents="none" />
+
+        <MapScenery />
 
         {/* The King's River descends from the eastern highlands and fans into four delta channels. */}
         <g className="river-system" clipPath="url(#land-clip)" pointerEvents="none">
