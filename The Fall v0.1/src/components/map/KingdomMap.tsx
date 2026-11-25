@@ -18,32 +18,21 @@ interface KingdomMapProps {
   targetIds?: ProvinceId[] | null;
 }
 
-/** Smooth closed land outline: coastline (curved) plus the east/north map frame. */
+/** Smooth, fully enclosed island silhouette. The coastline now wraps all four sides. */
 function buildLandPath(): string {
   const pts = COASTLINE;
-  const first = pts[0] as [number, number];
-  let d = `M${MAP_WIDTH} 0 L${first[0]} ${first[1]}`;
-  for (let i = 1; i < pts.length - 1; i++) {
-    const [x, y] = pts[i] as [number, number];
-    const [nx, ny] = pts[i + 1] as [number, number];
+  if (pts.length < 4) return '';
+  let d = `M${pts[0]![0]} ${pts[0]![1]}`;
+  for (let i = 1; i < pts.length; i++) {
+    const [x, y] = pts[i]!;
+    const [nx, ny] = pts[(i + 1) % pts.length]!;
     d += ` Q${x} ${y} ${(x + nx) / 2} ${(y + ny) / 2}`;
   }
-  const last = pts[pts.length - 1] as [number, number];
-  d += ` L${last[0]} ${last[1]} L${MAP_WIDTH} ${MAP_HEIGHT} Z`;
-  return d;
+  return `${d} Z`;
 }
 
 function buildCoastStroke(): string {
-  const pts = COASTLINE;
-  const first = pts[0] as [number, number];
-  let d = `M${first[0]} ${first[1]}`;
-  for (let i = 1; i < pts.length - 1; i++) {
-    const [x, y] = pts[i] as [number, number];
-    const [nx, ny] = pts[i + 1] as [number, number];
-    d += ` Q${x} ${y} ${(x + nx) / 2} ${(y + ny) / 2}`;
-  }
-  const last = pts[pts.length - 1] as [number, number];
-  return `${d} L${last[0]} ${last[1]}`;
+  return buildLandPath();
 }
 
 const LAND_PATH = buildLandPath();
