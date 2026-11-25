@@ -94,8 +94,8 @@ export function KingdomMap({ state, selectedId, onSelect, hoveredId, onHover, ta
           <path d="M4 14 q5 -5 10 0 t10 0" className="sea__wave" />
           <path d="M26 4 q4 -4 8 0" className="sea__wave sea__wave--faint" />
         </pattern>
-        <pattern id="claim-hatch" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-          <line x1="0" y1="0" x2="0" y2="9" className="claim-hatch__line" />
+        <pattern id="claim-hatch" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <line x1="0" y1="0" x2="0" y2="14" className="claim-hatch__line" />
         </pattern>
         <filter id="paper-grain" x="0" y="0" width="100%" height="100%">
           <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="noise" />
@@ -106,26 +106,30 @@ export function KingdomMap({ state, selectedId, onSelect, hoveredId, onHover, ta
           />
         </filter>
         {/* Terrain textures, one per province type (subtle) */}
-        <pattern id="terrain-fertile_lands" width="14" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-8)">
-          <path d="M0 8 h14" className="terrain-line" />
-          <path d="M3 8 v-3 M7 8 v-4 M11 8 v-3" className="terrain-line terrain-line--faint" />
+        <pattern id="terrain-fertile_lands" width="34" height="24" patternUnits="userSpaceOnUse" patternTransform="rotate(-8)">
+          <path d="M0 18 C9 16 20 20 34 17" className="terrain-line" />
+          <path d="M7 18 v-5 M17 18 v-7 M27 18 v-5" className="terrain-line terrain-line--faint" />
+          <path d="M2 5 h8 M20 7 h9" className="terrain-line terrain-line--faint" />
         </pattern>
-        <pattern id="terrain-mountain_pass" width="26" height="20" patternUnits="userSpaceOnUse">
-          <path d="M2 16 L8 7 L14 16 M12 16 L18 9 L24 16" className="terrain-line" />
+        <pattern id="terrain-mountain_pass" width="46" height="34" patternUnits="userSpaceOnUse">
+          <path d="M3 27 L14 10 L25 27 M21 27 L31 15 L43 27" className="terrain-line" />
+          <path d="M11 15 L14 10 L18 16 M28 19 L31 15 L35 20" className="terrain-line terrain-line--faint" />
         </pattern>
-        <pattern id="terrain-coastal_port" width="22" height="12" patternUnits="userSpaceOnUse">
-          <path d="M1 8 q5 -5 10 0 t10 0" className="terrain-line" />
+        <pattern id="terrain-coastal_port" width="42" height="26" patternUnits="userSpaceOnUse">
+          <path d="M1 8 q10 -7 20 0 t20 0 M-12 20 q10 -7 20 0 t20 0" className="terrain-line" />
         </pattern>
-        <pattern id="terrain-mining_region" width="18" height="18" patternUnits="userSpaceOnUse">
-          <path d="M3 13 L9 4 L15 13 Z" className="terrain-line terrain-line--faint" />
-          <circle cx="9" cy="10" r="1" className="terrain-dot" />
+        <pattern id="terrain-mining_region" width="38" height="32" patternUnits="userSpaceOnUse">
+          <path d="M5 23 L16 8 L27 23 Z" className="terrain-line terrain-line--faint" />
+          <path d="M16 8 L20 14" className="terrain-line" />
+          <circle cx="16" cy="18" r="1.4" className="terrain-dot" />
         </pattern>
-        <pattern id="terrain-city" width="12" height="12" patternUnits="userSpaceOnUse">
-          <rect x="2" y="5" width="3" height="5" className="terrain-line terrain-line--faint" />
-          <rect x="7" y="3" width="3" height="7" className="terrain-line terrain-line--faint" />
+        <pattern id="terrain-city" width="30" height="26" patternUnits="userSpaceOnUse">
+          <path d="M3 21 V10 H10 V21 M13 21 V5 H21 V21 M24 21 V12 H28 V21" className="terrain-line terrain-line--faint" />
+          <path d="M3 10 L6.5 7 L10 10 M13 5 L17 2 L21 5" className="terrain-line terrain-line--faint" />
         </pattern>
-        <pattern id="terrain-castle" width="16" height="14" patternUnits="userSpaceOnUse">
-          <path d="M1 11 v-5 h2 v2 h2 v-2 h2 v2 h2 v-2 h2 v5" className="terrain-line terrain-line--faint" />
+        <pattern id="terrain-castle" width="36" height="30" patternUnits="userSpaceOnUse">
+          <path d="M4 24 V11 H8 V15 H13 V11 H17 V15 H22 V11 H27 V24 Z" className="terrain-line terrain-line--faint" />
+          <path d="M8 11 V7 H13 V11 M17 11 V6 H22 V11" className="terrain-line terrain-line--faint" />
         </pattern>
         <radialGradient id="vignette" cx="50%" cy="50%" r="75%">
           <stop offset="60%" stopColor="#5a4430" stopOpacity="0" />
