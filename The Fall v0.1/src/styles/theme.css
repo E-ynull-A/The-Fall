@@ -33,7 +33,21 @@
   --good: #8ea35a;
 
   --font-display: 'Cinzel', 'Trajan Pro', Georgia, serif;
+  --font-brand: 'Cinzel', 'Trajan Pro', Georgia, serif;
   --font-body: 'EB Garamond', Garamond, Georgia, serif;
+
+  /* Shared surface and interaction tokens for the royal interface. */
+  --border-bronze: rgba(184, 148, 74, 0.58);
+  --border-bronze-soft: rgba(184, 148, 74, 0.28);
+  --surface-raised: linear-gradient(180deg, #342519 0%, #21170f 100%);
+  --surface-inset: linear-gradient(180deg, #1d140d 0%, #2b1d12 100%);
+  --focus-ring: 0 0 0 2px var(--umber-900), 0 0 0 4px var(--gold-300);
+
+  --resource-gold: #e0b957;
+  --resource-food: #c9a66a;
+  --resource-military: #9da9b4;
+  --resource-stability: #a3ad70;
+  --resource-legitimacy: #d8bd79;
 
   --radius: 4px;
   --shadow-panel: 0 1px 0 rgba(226, 194, 122, 0.08) inset, 0 6px 18px rgba(0, 0, 0, 0.35);
