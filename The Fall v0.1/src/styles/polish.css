@@ -972,3 +972,240 @@ body {
   .atlas__legend { max-width: none; }
   .prov-label__name { font-size: 15px; }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   THE FALL · Illustrated Royal Atlas
+   A full visual treatment for the interactive map layer.
+   ═══════════════════════════════════════════════════════════════ */
+
+.atlas {
+  background:
+    radial-gradient(ellipse at 50% 42%, rgba(192, 169, 119, 0.13), transparent 66%),
+    linear-gradient(145deg, #21170f 0%, #332519 52%, #1b130d 100%);
+  border: 1px solid #a88953;
+  border-radius: 2px;
+  box-shadow:
+    inset 0 0 0 1px rgba(238, 218, 174, 0.14),
+    inset 0 0 0 5px rgba(23, 17, 12, 0.3),
+    0 12px 30px rgba(0, 0, 0, 0.5);
+}
+
+.atlas-map {
+  filter: saturate(1.12) contrast(1.025) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.28));
+}
+
+.sea {
+  fill: url(#sea-gradient);
+}
+
+.sea__wave {
+  stroke: #657765;
+  stroke-width: 0.85;
+  opacity: 0.38;
+}
+
+.sea__wave--faint { opacity: 0.2; }
+
+.sea__label {
+  fill: #455648;
+  font-size: 15px;
+  letter-spacing: 0.64em;
+  opacity: 0.78;
+  text-shadow: 0 1px 0 rgba(239, 229, 197, 0.38);
+}
+
+.land { fill: url(#parchment-gradient); }
+
+.prov {
+  fill-opacity: 0.48;
+  stroke: none;
+  transition: fill-opacity 180ms ease, filter 180ms ease;
+}
+
+.prov--player { fill-opacity: 0.56; }
+.prov--neighbor { fill-opacity: 0.58; }
+.prov:hover,
+.prov:focus-visible { fill-opacity: 0.66; }
+.prov--selected,
+.prov--selected:hover {
+  fill-opacity: 0.72;
+  filter: saturate(1.12) brightness(1.025);
+}
+
+.terrain {
+  opacity: 0.24;
+  mix-blend-mode: multiply;
+}
+
+.terrain-line {
+  fill: none;
+  stroke: #554a36;
+  stroke-width: 0.72;
+  opacity: 0.55;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.terrain-line--faint {
+  stroke: #695b43;
+  stroke-width: 0.56;
+  opacity: 0.34;
+}
+
+.terrain-dot {
+  fill: #6d5738;
+  opacity: 0.55;
+}
+
+.atlas-contours {
+  opacity: 0.075;
+  mix-blend-mode: multiply;
+}
+
+.contour-line {
+  fill: none;
+  stroke: #685a41;
+  stroke-width: 0.72;
+  opacity: 0.65;
+}
+.contour-line--inner {
+  stroke-width: 0.52;
+  opacity: 0.38;
+}
+
+.claim-hatch__line {
+  stroke: #7e3831;
+  stroke-width: 1.15;
+  opacity: 0.38;
+}
+
+.border {
+  fill: none;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.border--province {
+  stroke: #6c5e47;
+  stroke-width: 0.86;
+  stroke-dasharray: 2.3 4.2;
+  opacity: 0.56;
+}
+.border--realm-halo {
+  stroke: #f0d69b;
+  stroke-width: 4.2;
+  opacity: 0.64;
+}
+.border--realm {
+  stroke: #493522;
+  stroke-width: 2.05;
+  opacity: 0.96;
+  filter: drop-shadow(0 1px 0 rgba(245, 225, 177, 0.26));
+}
+
+.coast--shore {
+  stroke: #e7d7ad;
+  stroke-width: 10;
+  opacity: 0.34;
+}
+.coast {
+  stroke: #55432b;
+  stroke-width: 2.45;
+}
+
+.realm-label { display: none; }
+
+.prov-label__name {
+  fill: #302317;
+  font-size: 17.5px;
+  font-weight: 700;
+  letter-spacing: 0.055em;
+  stroke: rgba(247, 237, 210, 0.98);
+  stroke-width: 4.5px;
+  stroke-linejoin: round;
+  paint-order: stroke fill;
+  filter: drop-shadow(0 1px 1px rgba(47, 32, 15, 0.32));
+}
+
+.prov-label--selected .prov-label__name {
+  fill: #742c27;
+  stroke: #fff0cd;
+  stroke-width: 5px;
+}
+
+.glyph {
+  fill: none;
+  stroke: #58442a;
+  stroke-width: 1.45;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.84;
+  filter: drop-shadow(0 1px 0 rgba(245, 232, 197, 0.35));
+}
+
+.glyph__shade { opacity: 0.5; }
+.glyph__road { stroke-dasharray: 2 2; }
+
+.prov-outline {
+  stroke: #f4d47f;
+  stroke-width: 3.7;
+  filter: drop-shadow(0 0 4px rgba(98, 69, 25, 0.78));
+}
+
+.prov-hover {
+  stroke: rgba(246, 220, 158, 0.98);
+  stroke-width: 2.6;
+  stroke-dasharray: 6 4;
+  filter: drop-shadow(0 1px 2px rgba(50, 34, 18, 0.46));
+}
+
+.map-frame {
+  stroke: #57432a;
+  stroke-width: 2.5;
+  filter: drop-shadow(0 1px 0 rgba(247, 229, 185, 0.35));
+}
+.map-frame--inner {
+  stroke: #c0a16b;
+  stroke-width: 0.95;
+  opacity: 0.78;
+}
+
+.atlas__legend {
+  right: 18px;
+  bottom: 16px;
+  gap: 6px 14px;
+  max-width: min(76%, 660px);
+  padding: 8px 13px;
+  color: #352719;
+  font-size: 0.88rem;
+  background:
+    linear-gradient(180deg, rgba(255, 248, 225, 0.96), rgba(221, 202, 160, 0.97));
+  border: 1px solid rgba(111, 79, 37, 0.72);
+  border-radius: 2px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.68),
+    0 4px 12px rgba(30, 20, 11, 0.32);
+}
+
+.legend__swatch {
+  width: 11px;
+  height: 11px;
+  border: 1px solid rgba(42, 29, 20, 0.64);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.18);
+}
+
+.atlas__hint {
+  top: 15px;
+  padding: 6px 18px;
+  color: #4b351f;
+  font-size: 0.9rem;
+  background: linear-gradient(180deg, rgba(255, 248, 226, 0.98), rgba(231, 215, 180, 0.98));
+  border: 1px solid rgba(145, 111, 58, 0.68);
+  border-radius: 2px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), 0 3px 8px rgba(42, 28, 14, 0.2);
+}
+
+@media (max-width: 1000px) {
+  .prov-label__name { font-size: 15.5px; }
+  .atlas__legend { max-width: none; }
+}
