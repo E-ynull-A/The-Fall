@@ -1,5 +1,9 @@
 import type { ProvinceId } from '../../types/province';
 
+// Shared SVG coordinate system for the province geometry and map artwork.
+export const MAP_WIDTH = 1000;
+export const MAP_HEIGHT = 460;
+
 /**
  * Outer land silhouette traced to the D — Stylized Game Map artwork.
  * It leaves the distributary channels visually open while clipping province
