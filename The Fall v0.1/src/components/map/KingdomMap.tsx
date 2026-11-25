@@ -22,8 +22,12 @@ interface KingdomMapProps {
 function buildLandPath(): string {
   const pts = COASTLINE;
   if (pts.length < 4) return '';
-  let d = `M${pts[0]![0]} ${pts[0]![1]}`;
-  for (let i = 1; i < pts.length; i++) {
+  const last = pts[pts.length - 1]!;
+  const first = pts[0]!;
+  const startX = (last[0] + first[0]) / 2;
+  const startY = (last[1] + first[1]) / 2;
+  let d = `M${startX} ${startY}`;
+  for (let i = 0; i < pts.length; i++) {
     const [x, y] = pts[i]!;
     const [nx, ny] = pts[(i + 1) % pts.length]!;
     d += ` Q${x} ${y} ${(x + nx) / 2} ${(y + ny) / 2}`;
