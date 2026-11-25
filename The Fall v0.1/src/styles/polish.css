@@ -1332,3 +1332,99 @@ body {
   .event__art { height: 112px; }
   .court__portrait { flex-basis: 46px; width: 46px; height: 58px; }
 }
+
+
+/* ── Preserve the original proportions of the supplied square art tiles ── */
+.card {
+  position: relative;
+}
+.card__art {
+  position: absolute;
+  top: 28px;
+  right: 9px;
+  z-index: 0;
+  width: 58px;
+  height: 58px;
+  margin: 0;
+  border: 1px solid rgba(126, 91, 44, 0.82);
+  background-size: 400% 400%;
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 238, 197, 0.18),
+    0 2px 5px rgba(40, 25, 12, 0.3);
+}
+.card__art::after {
+  background:
+    linear-gradient(180deg, rgba(20, 13, 7, 0.02), rgba(20, 13, 7, 0.26)),
+    linear-gradient(90deg, rgba(20, 13, 7, 0.08), transparent 25%, transparent 75%, rgba(20, 13, 7, 0.08));
+}
+.card__header,
+.card__name,
+.card__rows,
+.card__desc {
+  position: relative;
+  z-index: 1;
+}
+.card__name {
+  max-width: calc(100% - 70px);
+  min-height: 2.25em;
+  padding-top: 2px;
+}
+.card__rows {
+  margin-top: 13px;
+}
+
+.event__art {
+  float: left;
+  width: 142px;
+  height: 142px;
+  max-width: 42%;
+  margin: 0 16px 10px 0;
+  background-size: 400% 400%;
+  outline: none;
+}
+.event__art::after {
+  inset: 0;
+}
+.event__art::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  right: 7px;
+  bottom: 7px;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(93, 44, 30, 0.65);
+  border-radius: 50%;
+  background-image: url('/assets/royal-sprite.jpg');
+  background-size: 400% 400%;
+  background-position: 66.667% 100%;
+  box-shadow: 0 2px 5px rgba(28, 16, 8, 0.45);
+}
+.event__text {
+  min-height: 142px;
+  overflow: auto;
+}
+.event__choices {
+  clear: both;
+}
+
+.court__portrait {
+  flex-basis: 56px;
+  width: 56px;
+  height: 56px;
+  background-size: 400% 400%;
+}
+.court__head {
+  align-items: center;
+}
+
+@media (max-width: 600px) {
+  .card__art { width: 50px; height: 50px; }
+  .card__name { max-width: calc(100% - 60px); }
+  .event__art {
+    width: 112px;
+    height: 112px;
+    margin-right: 12px;
+  }
+  .event__text { min-height: 112px; }
+}
