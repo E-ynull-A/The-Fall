@@ -1,0 +1,433 @@
+/* ── Atlas frame ──────────────────────────────────────── */
+.atlas {
+  position: relative;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(ellipse at center, rgba(201, 162, 74, 0.08), transparent 70%),
+    var(--umber-800);
+  border: 1px solid var(--gold-700);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+.atlas-map {
+  display: block;
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.5));
+}
+
+.atlas__legend {
+  position: absolute;
+  right: 18px;
+  bottom: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  max-width: calc(100% - 36px);
+  padding: 6px 10px;
+  color: var(--ink);
+  font-size: 0.85rem;
+  background: rgba(243, 231, 201, 0.88);
+  border: 1px solid rgba(58, 44, 32, 0.35);
+  border-radius: 3px;
+  pointer-events: none;
+}
+
+.legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend__swatch {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border: 1px solid rgba(0, 0, 0, 0.45);
+  transform: rotate(45deg);
+  flex: none;
+}
+
+.legend__swatch--claim {
+  background: repeating-linear-gradient(45deg, transparent 0 3px, rgba(122, 46, 46, 0.75) 3px 4.5px);
+}
+
+.legend__you {
+  color: var(--burgundy-500);
+}
+
+.atlas__hint {
+  position: absolute;
+  left: 50%;
+  top: 18px;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 3px 12px;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  background: rgba(243, 231, 201, 0.82);
+  border: 1px solid rgba(58, 44, 32, 0.25);
+  border-radius: 3px;
+  pointer-events: none;
+}
+
+/* ── Sea & land ───────────────────────────────────────── */
+.sea {
+  fill: #b4b598;
+  cursor: default;
+}
+
+.sea__wave {
+  fill: none;
+  stroke: #6f7563;
+  stroke-width: 0.9;
+  opacity: 0.45;
+}
+
+.sea__wave--faint {
+  opacity: 0.25;
+}
+
+.sea__label {
+  font-family: var(--font-display);
+  font-size: 15px;
+  letter-spacing: 0.5em;
+  fill: #4c5243;
+  text-anchor: middle;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+.land {
+  fill: #ead9b0;
+}
+
+.coast {
+  fill: none;
+  stroke: #3a2c20;
+  stroke-width: 2.2;
+}
+
+.coast--shore {
+  stroke: #6f7563;
+  stroke-width: 9;
+  opacity: 0.25;
+}
+
+.compass__ring {
+  fill: rgba(234, 217, 176, 0.5);
+  stroke: #3a2c20;
+  stroke-width: 1;
+}
+
+.compass__ring--thin {
+  fill: none;
+  stroke-width: 0.6;
+}
+
+.compass__needle {
+  fill: #3a2c20;
+}
+
+.compass__needle--light {
+  fill: #8a7356;
+}
+
+.compass__north {
+  fill: var(--burgundy-500);
+}
+
+.compass__n {
+  font-family: var(--font-display);
+  font-size: 12px;
+  fill: #3a2c20;
+  text-anchor: middle;
+}
+
+/* ── Provinces ────────────────────────────────────────── */
+.prov {
+  fill: var(--realm);
+  fill-opacity: 0.3;
+  stroke: none;
+  cursor: pointer;
+  outline: none;
+  transition: fill-opacity 140ms ease;
+}
+
+.prov--player {
+  fill-opacity: 0.36;
+}
+
+.prov:hover,
+.prov:focus-visible {
+  fill-opacity: 0.52;
+}
+
+.prov--neighbor {
+  fill-opacity: 0.44;
+}
+
+.prov--selected,
+.prov--selected:hover {
+  fill-opacity: 0.62;
+}
+
+.prov-outline {
+  fill: none;
+  stroke: #f6d98a;
+  stroke-width: 4;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 4px rgba(110, 83, 28, 0.9));
+}
+
+.claim-hatch__line {
+  stroke: #7a2e2e;
+  stroke-width: 1.6;
+  opacity: 0.4;
+}
+
+.border {
+  fill: none;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.border--province {
+  stroke: #5a4430;
+  stroke-width: 1.1;
+  stroke-dasharray: 4 3;
+  opacity: 0.7;
+}
+
+.border--realm {
+  stroke: #2a1d14;
+  stroke-width: 2.8;
+}
+
+/* ── Labels ───────────────────────────────────────────── */
+.realm-label {
+  font-family: var(--font-display);
+  font-size: 30px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  text-anchor: middle;
+  fill: #2a1d14;
+  opacity: 0.16;
+}
+
+.prov-label__name {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-anchor: middle;
+  fill: #2a1d14;
+  paint-order: stroke;
+  stroke: rgba(240, 226, 190, 0.85);
+  stroke-width: 3.5px;
+  stroke-linejoin: round;
+}
+
+.prov-label--selected .prov-label__name {
+  fill: #4e1b1b;
+}
+
+.glyph {
+  fill: none;
+  stroke: #3a2c20;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.8;
+}
+
+.glyph__shade {
+  stroke-width: 0.9;
+  opacity: 0.6;
+}
+
+.glyph__road {
+  stroke-dasharray: 2 2;
+}
+
+.map-frame {
+  fill: none;
+  stroke: #3a2c20;
+  stroke-width: 2;
+}
+
+.map-frame--inner {
+  stroke-width: 0.8;
+  opacity: 0.7;
+}
+
+/* ── Province panel ───────────────────────────────────── */
+.province-panel {
+  border-color: var(--gold-500);
+}
+
+.icon-btn {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--text-on-dark);
+  background: transparent;
+  border: 1px solid var(--umber-500);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.icon-btn:hover {
+  border-color: var(--gold-400);
+}
+
+.province-panel__head {
+  padding-left: 10px;
+  border-left: 3px solid var(--realm);
+}
+
+.province-panel__name {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--parchment-100);
+}
+
+.province-panel__owner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 2px 0 0 !important;
+  color: var(--text-on-dark-muted);
+  font-size: 0.92rem;
+}
+
+.province-panel__claim {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: #e19a8a;
+}
+
+.province-panel__type {
+  margin-top: 10px;
+  font-size: 0.92rem;
+}
+
+.facts--grid {
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 16px;
+  margin-top: 10px;
+}
+
+.stability {
+  margin-top: 10px;
+}
+
+.stability__row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.92rem;
+}
+
+.stability .progress {
+  margin-top: 4px;
+}
+
+.progress__fill--danger {
+  background: linear-gradient(90deg, var(--burgundy-500), var(--danger));
+}
+
+.traits {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.trait {
+  display: grid;
+  font-size: 0.88rem;
+}
+
+.trait__name {
+  font-family: var(--font-display);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  color: var(--gold-300);
+}
+
+.trait__desc {
+  font-style: italic;
+  color: var(--text-on-dark-muted);
+}
+
+.neighbors,
+.province-actions {
+  margin-top: 12px;
+}
+
+.neighbors__list,
+.province-actions__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.neighbor-chip {
+  padding: 2px 8px;
+  font-size: 0.85rem;
+  color: var(--text-on-dark);
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--umber-500);
+  border-left: 3px solid var(--realm);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.neighbor-chip:hover {
+  border-color: var(--gold-400);
+  border-left-color: var(--realm);
+}
+
+.btn--small {
+  padding: 4px 8px;
+  font-size: 0.66rem;
+  gap: 6px;
+}
+
+.province-actions__note {
+  flex-basis: 100%;
+  margin: 2px 0 0 !important;
+}
+
+@media (max-width: 1000px) {
+  .atlas {
+    height: auto;
+  }
+  .atlas-map {
+    flex: none;
+    height: auto;
+  }
+  .atlas__legend {
+    position: static;
+    max-width: none;
+    border-width: 1px 0 0;
+    border-radius: 0;
+  }
+  .atlas__hint {
+    top: 8px;
+    font-size: 0.8rem;
+  }
+}

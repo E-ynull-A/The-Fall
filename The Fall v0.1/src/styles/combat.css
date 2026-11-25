@@ -1,0 +1,363 @@
+/* ── Buttons on parchment ─────────────────────────────── */
+.btn--ghost-dark {
+  background: transparent;
+  color: var(--ink);
+  border-color: rgba(58, 44, 32, 0.45);
+}
+
+.btn--secondary-dark {
+  background: var(--umber-700);
+  color: var(--parchment-100);
+}
+
+.modal__footer {
+  gap: 8px;
+}
+
+.modal__section {
+  margin: 18px 0 6px;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--burgundy-500);
+}
+
+/* ── Fields ───────────────────────────────────────────── */
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.field input[type='range'] {
+  width: 100%;
+  accent-color: var(--burgundy-500);
+}
+
+.battle-facts {
+  display: grid;
+  gap: 4px;
+  margin: 12px 0;
+}
+
+.battle-facts div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.battle-facts dt {
+  color: var(--ink-soft);
+}
+
+.battle-facts dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+}
+
+.notice {
+  margin: 12px 0 0;
+  padding: 8px 12px;
+  font-size: 0.92rem;
+  background: rgba(95, 106, 54, 0.12);
+  border-left: 3px solid var(--olive-500);
+}
+
+.notice--grave {
+  color: var(--burgundy-700);
+  background: rgba(122, 46, 46, 0.1);
+  border-left-color: var(--burgundy-500);
+}
+
+/* ── Odds ─────────────────────────────────────────────── */
+.odds {
+  margin-top: 8px;
+}
+
+.odds__row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.progress--light {
+  background: rgba(58, 44, 32, 0.15);
+  border-color: rgba(58, 44, 32, 0.3);
+}
+
+/* ── Tactics ──────────────────────────────────────────── */
+.tactics {
+  margin: 14px 0 0;
+  padding: 0;
+  border: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.tactics legend {
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.tactic {
+  display: grid;
+  gap: 2px;
+  padding: 8px 10px;
+  border: 1px solid rgba(58, 44, 32, 0.3);
+  border-radius: var(--radius);
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.tactic input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tactic--active {
+  border-color: var(--burgundy-500);
+  box-shadow: inset 0 0 0 1px var(--burgundy-500);
+  background: rgba(122, 46, 46, 0.08);
+}
+
+.tactic:focus-within {
+  outline: 2px solid var(--gold-500);
+}
+
+.tactic__name {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+}
+
+.tactic__desc {
+  font-size: 0.82rem;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+/* ── War room ─────────────────────────────────────────── */
+.target-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.target {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border: 1px solid rgba(58, 44, 32, 0.2);
+  border-left: 3px solid var(--realm, var(--burgundy-500));
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.target__actions {
+  display: flex;
+  gap: 6px;
+  flex: none;
+}
+
+.segmented--light {
+  margin-bottom: 8px;
+  border-color: rgba(58, 44, 32, 0.4);
+}
+
+.segmented--light .segmented__option {
+  color: var(--ink-soft);
+}
+
+.segmented--light .segmented__option--active {
+  color: var(--parchment-100);
+}
+
+.battle-table thead th {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  text-align: right;
+}
+
+.battle-table thead th:first-child {
+  text-align: left;
+}
+
+.report-notes {
+  margin: 12px 0 0;
+  padding-left: 18px;
+}
+
+/* ── Recruitment ──────────────────────────────────────── */
+.recruit {
+  display: grid;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.recruit__row {
+  display: flex;
+  gap: 6px;
+}
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--gold-700);
+  border-radius: var(--radius);
+}
+
+.stepper__btn {
+  width: 24px;
+  height: 100%;
+  padding: 0;
+  color: var(--text-on-dark);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.stepper__value {
+  min-width: 22px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Map: sieges ──────────────────────────────────────── */
+.siege-marker circle {
+  fill: rgba(122, 46, 46, 0.9);
+  stroke: #f3e7c9;
+  stroke-width: 1.5;
+}
+
+.siege-marker path {
+  stroke: #f3e7c9;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  fill: none;
+}
+
+@media (max-width: 600px) {
+  .tactics {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Events (Phase 6) ─────────────────────────────────── */
+.event__text {
+  margin: 0 0 14px;
+  font-size: 1.05rem;
+  font-style: italic;
+}
+
+.event__choices {
+  display: grid;
+  gap: 8px;
+}
+
+.event-choice {
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+  text-align: left;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(58, 44, 32, 0.3);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+.event-choice:hover,
+.event-choice:focus-visible {
+  background: rgba(255, 255, 255, 0.55);
+  border-color: var(--burgundy-500);
+}
+
+.event-choice__label {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+}
+
+.event-choice__desc {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.event-choice__effects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.card__line--later {
+  color: #5b4a7a;
+  background: rgba(91, 74, 122, 0.14);
+}
+
+.event-list {
+  margin: 0;
+  padding-left: 16px;
+  display: grid;
+  gap: 4px;
+}
+
+/* ── Diplomacy ────────────────────────────────────────── */
+.court {
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(58, 44, 32, 0.2);
+  border-left: 4px solid var(--realm);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.court__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.court__name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+}
+
+.court__stance {
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.court__stance--war {
+  color: var(--burgundy-500);
+  font-weight: 600;
+}
+
+.court__stance--alliance {
+  color: var(--olive-500);
+  font-weight: 600;
+}
+
+.court p {
+  margin: 4px 0 8px;
+}
+
+.court__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.btn--danger {
+  background: transparent;
+  color: var(--burgundy-500);
+  border-color: var(--burgundy-500);
+}

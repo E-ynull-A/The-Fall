@@ -1,0 +1,481 @@
+import type { EventDefinition } from '../../types/event';
+
+/**
+ * Events (GDD §9). Each offers real choices; some consequences arrive years later.
+ * Weight 0 means the engine triggers the event itself (rebellions, envoys).
+ */
+export const EVENTS: readonly EventDefinition[] = [
+  {
+    id: 'bread_crisis',
+    severity: 'crisis',
+    name: 'The Bread Crisis',
+    description: 'The harvest has failed in several provinces. Food reserves are dangerously low and the bakers have shuttered their doors.',
+    conditions: [{ kind: 'resource_below', resource: 'food', value: 15 }],
+    weight: 4,
+    choices: [
+      {
+        id: 'granaries',
+        label: 'Open the royal granaries',
+        description: 'Feed the people from the crown’s own stores.',
+        effects: [{ kind: 'resources', delta: { food: -6, stability: 8 } }],
+        delayed: [],
+      },
+      {
+        id: 'buy',
+        label: 'Purchase foreign grain',
+        description: 'The merchants of the coast will sell, at a price.',
+        effects: [{ kind: 'resources', delta: { gold: -8, food: 10 } }],
+        delayed: [],
+      },
+      {
+        id: 'ignore',
+        label: 'Ignore the crisis',
+        description: 'No cost today. The hungry have long memories.',
+        effects: [],
+        delayed: [{ afterYears: 1, delta: { stability: -8 }, description: 'Bread riots break out in the towns.' }],
+      },
+    ],
+  },
+  {
+    id: 'drought',
+    severity: 'warning',
+    name: 'Drought',
+    description: 'No rain has fallen on {province} since spring. The wheat stands brown and brittle in the fields.',
+    conditions: [{ kind: 'owns_province_type', type: 'fertile_lands' }],
+    weight: 3,
+    provinceTarget: 'random_fertile',
+    choices: [
+      {
+        id: 'wells',
+        label: 'Dig new wells',
+        description: 'Costly, but the fields may yet be saved.',
+        effects: [{ kind: 'resources', delta: { gold: -6 } }],
+        delayed: [],
+      },
+      {
+        id: 'fail',
+        label: 'Let the fields fail',
+        description: 'The granaries will feel it.',
+        effects: [
+          { kind: 'resources', delta: { food: -8 } },
+          { kind: 'province_stability', amount: -5 },
+        ],
+        delayed: [],
+      },
+    ],
+  },
+  {
+    id: 'plague',
+    severity: 'crisis',
+    name: 'Plague',
+    description: 'A sweating sickness has come up the river roads. Physicians speak of bad air; priests speak of sin.',
+    conditions: [{ kind: 'year_at_least', year: 1189 }],
+    weight: 2,
+    choices: [
+      {
+        id: 'quarantine',
+        label: 'Quarantine the towns',
+        description: 'Close the gates. Trade and tempers will suffer.',
+        effects: [{ kind: 'resources', delta: { gold: -4, stability: -3 } }],
+        delayed: [],
+      },
+      {
+        id: 'physicians',
+        label: 'Summon physicians from afar',
+        description: 'Learned men are not cheap.',
+        effects: [{ kind: 'resources', delta: { gold: -10, legitimacy: 2 } }],
+        delayed: [],
+      },
+      {
+        id: 'pray',
+        label: 'Trust in prayer',
+        description: 'The sickness runs its course.',
+        effects: [{ kind: 'resources', delta: { stability: -2 } }],
+        delayed: [{ afterYears: 1, delta: { military: -5, stability: -5 }, description: 'The plague ravages the barracks and the villages.' }],
+      },
+    ],
+  },
+  {
+    id: 'noble_conspiracy',
+    severity: 'warning',
+    name: 'Noble Conspiracy',
+    description: 'Your spymaster brings letters: several lords are plotting to place a cousin on your throne.',
+    conditions: [{ kind: 'resource_below', resource: 'legitimacy', value: 50 }],
+    weight: 3,
+    choices: [
+      {
+        id: 'arrest',
+        label: 'Arrest the conspirators',
+        description: 'Swift justice. Their retainers will not go quietly.',
+        effects: [{ kind: 'resources', delta: { military: -3, legitimacy: 4, stability: -3 } }],
+        delayed: [],
+      },
+      {
+        id: 'buy',
+        label: 'Buy their loyalty',
+        description: 'Every man has a price.',
+        effects: [{ kind: 'resources', delta: { gold: -8, legitimacy: 2 } }],
+        delayed: [],
+      },
+      {
+        id: 'ignore',
+        label: 'Pretend you saw nothing',
+        description: 'Perhaps it will come to nothing.',
+        effects: [],
+        delayed: [{ afterYears: 2, delta: { legitimacy: -10 }, description: 'The conspirators strike: your authority is openly defied.' }],
+      },
+    ],
+  },
+  {
+    id: 'religious_conflict',
+    severity: 'warning',
+    name: 'Religious Conflict',
+    description: 'A preacher denounces the bishops as corrupt. Crowds gather; the bishops demand you silence him.',
+    conditions: [],
+    weight: 2,
+    choices: [
+      {
+        id: 'bishops',
+        label: 'Side with the bishops',
+        description: 'The Church will bless your reign. The crowds will not.',
+        effects: [{ kind: 'resources', delta: { legitimacy: 5, stability: -4 } }],
+        delayed: [],
+      },
+      {
+        id: 'preacher',
+        label: 'Protect the preacher',
+        description: 'The people cheer. The bishops remember.',
+        effects: [{ kind: 'resources', delta: { stability: 3, legitimacy: -4 } }],
+        delayed: [],
+      },
+      {
+        id: 'silent',
+        label: 'Stay silent',
+        description: 'Let the quarrel burn itself out.',
+        effects: [{ kind: 'all_provinces_stability', amount: -3 }],
+        delayed: [],
+      },
+    ],
+  },
+  {
+    id: 'corruption',
+    severity: 'warning',
+    name: 'Corruption in the Treasury',
+    description: 'The ledgers do not add up. Someone close to the chancellor has been skimming the royal revenues.',
+    conditions: [{ kind: 'resource_at_least', resource: 'gold', value: 12 }],
+    weight: 3,
+    choices: [
+      {
+        id: 'audit',
+        label: 'Audit every ledger',
+        description: 'Recover what was stolen. The officials resent it.',
+        effects: [{ kind: 'resources', delta: { gold: 5, stability: -3 } }],
+        delayed: [],
+      },
+      {
+        id: 'exile',
+        label: 'Exile the chancellor',
+        description: 'A public example.',
+        effects: [{ kind: 'resources', delta: { gold: 2, legitimacy: -2, stability: 1 } }],
+        delayed: [],
+      },
+      {
+        id: 'ignore',
+        label: 'Look away',
+        description: 'The theft continues.',
+        effects: [],
+        delayed: [{ afterYears: 1, delta: { gold: -8 }, description: 'Embezzlement drains the treasury.' }],
+      },
+    ],
+  },
+  {
+    id: 'peasant_rebellion',
+    severity: 'crisis',
+    name: 'Peasant Rebellion',
+    description: 'The peasants of {province} have risen. They burn tax rolls and drive out your bailiffs.',
+    conditions: [],
+    weight: 0,
+    provinceTarget: 'lowest_stability',
+    choices: [
+      {
+        id: 'crush',
+        label: 'Crush the rebellion',
+        description: 'Send the soldiers. Order will return, at a price in blood.',
+        effects: [
+          { kind: 'resources', delta: { military: -4, legitimacy: -2 } },
+          { kind: 'province_stability', amount: 20 },
+        ],
+        delayed: [],
+      },
+      {
+        id: 'concede',
+        label: 'Grant their demands',
+        description: 'Lower dues and pardons for all.',
+        effects: [
+          { kind: 'resources', delta: { gold: -6, legitimacy: -1 } },
+          { kind: 'province_stability', amount: 25 },
+        ],
+        delayed: [],
+      },
+      {
+        id: 'ignore',
+        label: 'Let it burn',
+        description: 'The rebels will tire. Or they will not.',
+        effects: [
+          { kind: 'resources', delta: { stability: -5 } },
+          { kind: 'province_garrison', amount: -2 },
+          { kind: 'province_food', amount: -1 },
+        ],
+        delayed: [],
+      },
+    ],
+  },
+  {
+    id: 'sea_raiders',
+    severity: 'crisis',
+    name: 'Raiders from the Sea',
+    description: 'Longships have been sighted off {province}. The raiders demand silver, or they will take it.',
+    conditions: [{ kind: 'owns_province_type', type: 'coastal_port' }],
+    weight: 3,
+    provinceTarget: 'random_coastal',
+    choices: [
+      {
+        id: 'pay',
+        label: 'Pay them off',
+        description: 'Silver for peace, this year.',
+        effects: [{ kind: 'resources', delta: { gold: -8 } }],
+        delayed: [],
+      },
+      {
+        id: 'fight',
+        label: 'Meet them on the beaches',
+        description: 'Steel, not silver.',
+        effects: [{ kind: 'resources', delta: { military: -4, legitimacy: 3 } }],
+        delayed: [],
+      },
+      {
+        id: 'abandon',
+        label: 'Withdraw inland',
+        description: 'The coast burns.',
+        effects: [
+          { kind: 'resources', delta: { food: -5 } },
+          { kind: 'province_stability', amount: -15 },
+        ],
+        delayed: [],
+      },
+    ],
+  },
+  {
+    id: 'trade_crisis',
+    severity: 'warning',
+    name: 'Trade Crisis',
+    description: 'Foreign merchants have stopped buying. Warehouses overflow and the guilds are angry.',
+    conditions: [{ kind: 'resource_at_least', resource: 'gold', value: 8 }],
+    weight: 2,
+    choices: [
+      {
+        id: 'subsidise',
+        label: 'Subsidise the guilds',
+        description: 'Buy their goods with royal coin.',
+        effects: [{ kind: 'resources', delta: { gold: -6, stability: 2 } }],
+        delayed: [],
+      },
+      {
+        id: 'tariffs',
+        label: 'Raise tariffs',
+        description: 'Make the foreigners pay to leave.',
+        effects: [{ kind: 'resources', delta: { gold: 4, stability: -3 } }],
+        delayed: [],
+      },
+      {
+        id: 'wait',
+        label: 'Wait it out',
+        description: 'Markets recover. Eventually.',
+        effects: [],
+        delayed: [{ afterYears: 1, delta: { gold: -6 }, description: 'The trade slump empties the customs houses.' }],
+      },
+    ],
+  },
+  {
+    id: 'desertion',
+    severity: 'crisis',
+    name: 'Military Desertion',
+    description: 'The soldiers have not been paid in months. Every night, more of them slip away.',
+    conditions: [
+      { kind: 'resource_below', resource: 'gold', value: 10 },
+      { kind: 'resource_at_least', resource: 'military', value: 8 },
+    ],
+    weight: 4,
+    choices: [
+      {
+        id: 'pay',
+        label: 'Pay the arrears',
+        description: 'Scrape the treasury.',
+        effects: [{ kind: 'resources', delta: { gold: -5 } }],
+        delayed: [],
+      },
+      {
+        id: 'hang',
+        label: 'Hang the deserters',
+        description: 'Fear keeps men in the ranks.',
+        effects: [{ kind: 'resources', delta: { military: -2, stability: -3, legitimacy: 1 } }],
+        delayed: [],
+      },
+      {
+        id: 'release',
+        label: 'Let them go home',
+        description: 'Fewer mouths to feed.',
+        effects: [{ kind: 'resources', delta: { military: -6, stability: 1 } }],
+        delayed: [],
+      },
+    ],
+  },
+  {
+    id: 'bountiful_harvest',
+    severity: 'opportunity',
+    name: 'A Bountiful Harvest',
+    description: 'For once, the rains came on time. The barns of {province} are full to bursting.',
+    conditions: [{ kind: 'owns_province_type', type: 'fertile_lands' }],
+    weight: 2,
+    provinceTarget: 'random_fertile',
+    choices: [
+      {
+        id: 'store',
+        label: 'Fill the granaries',
+        description: 'Prepare for leaner years.',
+        effects: [{ kind: 'resources', delta: { food: 12 } }],
+        delayed: [],
+      },
+      {
+        id: 'sell',
+        label: 'Sell the surplus',
+        description: 'Grain is gold.',
+        effects: [{ kind: 'resources', delta: { gold: 8 } }],
+        delayed: [],
+      },
+      {
+        id: 'feast',
+        label: 'Hold a great feast',
+        description: 'Let the people remember a good year.',
+        effects: [
+          { kind: 'resources', delta: { food: 4, stability: 5 } },
+          { kind: 'province_stability', amount: 10 },
+        ],
+        delayed: [],
+      },
+    ],
+  },
+  {
+    id: 'wandering_knight',
+    severity: 'opportunity',
+    name: 'The Wandering Knight',
+    description: 'A famed knight, masterless since his lord fell, offers his sword and his company to your banner.',
+    conditions: [],
+    weight: 2,
+    choices: [
+      {
+        id: 'accept',
+        label: 'Take him into your service',
+        description: 'His company and his war-craft are yours.',
+        effects: [
+          { kind: 'resources', delta: { gold: -3, military: 4 } },
+          { kind: 'add_card', cardId: 'war_council' },
+        ],
+        delayed: [],
+      },
+      {
+        id: 'decline',
+        label: 'Send him on with a blessing',
+        description: 'A gracious refusal is remembered.',
+        effects: [{ kind: 'resources', delta: { legitimacy: 1 } }],
+        delayed: [],
+      },
+    ],
+  },
+  {
+    id: 'comet',
+    severity: 'opportunity',
+    name: 'A Comet in the Sky',
+    description: 'A burning star hangs over the realm. Everyone asks what it means for the crown.',
+    conditions: [],
+    weight: 1,
+    choices: [
+      {
+        id: 'favour',
+        label: 'Proclaim it a sign of divine favour',
+        description: 'Bold words. If misfortune follows, they will be remembered.',
+        effects: [{ kind: 'resources', delta: { legitimacy: 5 } }],
+        delayed: [{ afterYears: 2, delta: { legitimacy: -3 }, description: 'Hard times make the comet look like a curse after all.' }],
+      },
+      {
+        id: 'hush',
+        label: 'Forbid talk of omens',
+        description: 'Calm the people.',
+        effects: [{ kind: 'resources', delta: { stability: 2 } }],
+        delayed: [],
+      },
+    ],
+  },
+  {
+    id: 'peace_envoy',
+    severity: 'opportunity',
+    name: 'Envoys Seek Peace',
+    description: 'Envoys of {kingdom} arrive under a white banner. They propose a truce of five years.',
+    conditions: [],
+    weight: 0,
+    choices: [
+      {
+        id: 'accept',
+        label: 'Accept the truce',
+        description: 'The armies come home. Sieges are lifted.',
+        effects: [{ kind: 'make_peace', years: 5 }],
+        delayed: [],
+      },
+      {
+        id: 'refuse',
+        label: 'Send them away',
+        description: 'The war goes on.',
+        effects: [{ kind: 'opinion', amount: -10 }],
+        delayed: [],
+      },
+    ],
+  },
+  {
+    id: 'tribute_demand',
+    severity: 'crisis',
+    name: 'A Demand for Tribute',
+    description: 'A herald of {kingdom} demands 10 gold as a mark of respect, or their armies will come to collect it.',
+    conditions: [],
+    weight: 0,
+    choices: [
+      {
+        id: 'pay',
+        label: 'Pay the tribute',
+        description: 'Humiliating, but cheaper than war.',
+        effects: [
+          { kind: 'pay_tribute', amount: 10 },
+          { kind: 'opinion', amount: 20 },
+          { kind: 'resources', delta: { legitimacy: -3 } },
+        ],
+        delayed: [],
+      },
+      {
+        id: 'refuse',
+        label: 'Refuse',
+        description: 'Ardenhal bows to no one.',
+        effects: [
+          { kind: 'opinion', amount: -20 },
+          { kind: 'resources', delta: { legitimacy: 2 } },
+        ],
+        delayed: [],
+      },
+    ],
+  },
+];
+
+/** Chance each year that a random event befalls the player. */
+export const YEARLY_EVENT_CHANCE = 0.65;
+/** Years before the same event can fire again. */
+export const EVENT_COOLDOWN = 4;
+/** Provinces below this stability may rebel. */
+export const REBELLION_THRESHOLD = 15;

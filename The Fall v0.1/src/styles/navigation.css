@@ -1,0 +1,835 @@
+/* ── Push layout ──────────────────────────────────────────
+ * The navigation rail and panel are real grid columns: opening them narrows the
+ * map column instead of covering it. Modes only change the column widths.
+ */
+.game {
+  --rail-w: 64px;
+  --panel-w: 0px;
+  --status-w: 214px;
+}
+
+.game[data-nav='expanded'] {
+  --rail-w: 64px;
+  --panel-w: 310px;
+}
+
+.game[data-nav='compact'] {
+  --rail-w: 64px;
+  --panel-w: 0px;
+}
+
+.game[data-nav='mapFocus'] {
+  --rail-w: 0px;
+  --panel-w: 0px;
+}
+
+.game__main {
+  grid-template-columns: var(--rail-w) var(--panel-w) minmax(0, 1fr) var(--status-w);
+  column-gap: 0;
+  padding: 10px 10px 0 0;
+  transition: grid-template-columns 240ms ease;
+}
+
+.game[data-nav='mapFocus'] .game__main {
+  padding-left: 10px;
+}
+
+.game__map {
+  position: relative;
+  margin-left: 10px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game__main {
+    transition: none;
+  }
+}
+
+/* ── Icon rail ────────────────────────────────────────── */
+.navrail {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0 6px;
+  background: linear-gradient(var(--umber-800), var(--umber-900));
+  border-right: 1px solid rgba(168, 130, 47, 0.25);
+}
+
+.game[data-nav='mapFocus'] .navrail {
+  visibility: hidden;
+  padding: 0;
+  border: 0;
+}
+
+.navrail__top {
+  position: relative;
+  padding: 2px 0 8px;
+  border-bottom: 1px solid rgba(168, 130, 47, 0.18);
+}
+
+.navrail__menu,
+.navrail__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 40px;
+  padding: 0 11px;
+  color: var(--text-on-dark-muted);
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  font-weight: 700;
+  white-space: nowrap;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: color 150ms ease, background 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.navrail__menu {
+  height: 44px;
+  padding: 0 10px;
+  color: var(--gold-300);
+  background: var(--umber-900);
+  border-color: var(--gold-700);
+}
+
+.navrail__menu:hover,
+.navrail__menu:focus-visible {
+  border-color: var(--gold-500);
+  box-shadow: 0 0 10px rgba(201, 162, 74, 0.28);
+}
+
+.navrail__item:hover {
+  color: var(--parchment-100);
+  background: rgba(201, 162, 74, 0.07);
+}
+
+.navrail__item--active {
+  color: var(--gold-300);
+  background: rgba(201, 162, 74, 0.12);
+  border-color: rgba(168, 130, 47, 0.4);
+}
+
+.navrail__item--active::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  background: var(--gold-400);
+  border-radius: 0 2px 2px 0;
+}
+
+.navrail__menu svg,
+.navrail__item svg {
+  flex: none;
+}
+
+.navrail__label {
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+/* Icons only: the label stays in the markup for structure; names come from tooltips and aria-label. */
+.navrail__label {
+  display: none;
+}
+
+.navrail__list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.navrail__bottom {
+  margin-top: auto;
+  padding: 8px 0 10px;
+  border-top: 1px solid rgba(168, 130, 47, 0.18);
+}
+
+.navrail__badge {
+  position: absolute;
+  left: 26px;
+  top: 4px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  line-height: 16px;
+  text-align: center;
+  color: var(--parchment-100);
+  background: var(--burgundy-500);
+  border-radius: 8px;
+}
+
+.navrail__badge--warn {
+  color: var(--umber-900);
+  background: var(--gold-400);
+}
+
+/* Compact-mode tooltips (the main button keeps its tooltip in every mode). */
+[data-tip] {
+  overflow: visible;
+}
+
+.navrail__item[data-tip]:hover::after,
+.navrail__item[data-tip]:focus-visible::after,
+.navrail__menu[data-tip]:hover::after,
+.navrail__menu[data-tip]:focus-visible::after {
+  content: attr(data-tip);
+  position: absolute;
+  z-index: 60;
+  left: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 4px 10px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--parchment-100);
+  background: var(--umber-900);
+  border: 1px solid var(--gold-700);
+  border-radius: 3px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* Tooltips extend beyond the rail. */
+.navrail {
+  overflow: visible;
+}
+
+.game[data-nav='mapFocus'] .navrail {
+  overflow: hidden;
+}
+
+/* First-visit hint */
+.navhint {
+  position: absolute;
+  z-index: 30;
+  left: calc(100% + 10px);
+  top: 4px;
+  width: 210px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 8px 10px;
+  font-size: 0.88rem;
+  color: var(--ink);
+  background: var(--parchment-100);
+  border: 1px solid var(--gold-500);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.5);
+  animation: hint-in 300ms ease;
+}
+
+.navhint::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 14px;
+  width: 10px;
+  height: 10px;
+  transform: rotate(45deg);
+  background: var(--parchment-100);
+  border-left: 1px solid var(--gold-500);
+  border-bottom: 1px solid var(--gold-500);
+}
+
+.navhint__close {
+  flex: none;
+  padding: 0 2px;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--ink-soft);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+@keyframes hint-in {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+}
+
+/* ── Navigation panel ─────────────────────────────────── */
+.navpanel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: rgba(23, 17, 12, 0.7);
+  border-right: 1px solid rgba(168, 130, 47, 0.2);
+  visibility: hidden;
+  transition: visibility 0s linear 240ms;
+}
+
+.game[data-nav='expanded'] .navpanel {
+  visibility: visible;
+  transition: none;
+}
+
+.navpanel__head,
+.navpanel__body {
+  /* Fixed inner width so content does not reflow while the column animates. */
+  width: 310px;
+}
+
+.navpanel__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px 8px 14px;
+  border-bottom: 1px solid rgba(168, 130, 47, 0.2);
+}
+
+.navpanel__title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--gold-300);
+}
+
+.navpanel__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 10px 14px 16px;
+  font-size: 0.9rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--umber-500) transparent;
+}
+
+/* Modal bodies reused inside the panel sit on dark ground: restore light text. */
+.navpanel__body .ledger__table th,
+.navpanel__body .ledger__table td,
+.navpanel__body .battle-facts dt,
+.navpanel__body .court p,
+.navpanel__body .target {
+  color: var(--text-on-dark);
+}
+
+.navpanel__body .ledger {
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.navpanel__body .ledger__table caption,
+.navpanel__body .modal__section {
+  color: var(--gold-400);
+  font-size: 0.9rem;
+}
+
+.navpanel__body .ledger__table .up {
+  color: var(--good);
+}
+
+.navpanel__body .ledger__table .down {
+  color: #e8a090;
+}
+
+.navpanel__body .ledger__table th,
+.navpanel__body .ledger__table td {
+  border-bottom-color: rgba(168, 130, 47, 0.18);
+}
+
+.navpanel__body .warnings,
+.navpanel__body .notice {
+  color: #f0c0b0;
+  background: rgba(122, 46, 46, 0.2);
+}
+
+.navpanel__body .muted {
+  color: var(--text-on-dark-muted);
+}
+
+.navpanel__body .court,
+.navpanel__body .target {
+  background: rgba(0, 0, 0, 0.18);
+  border-color: rgba(168, 130, 47, 0.2);
+}
+
+.navpanel__body .court__name {
+  color: var(--parchment-100);
+}
+
+.navpanel__body .btn--ghost-dark {
+  color: var(--text-on-dark);
+  border-color: var(--umber-500);
+}
+
+.navpanel__body .segmented--light .segmented__option {
+  color: var(--text-on-dark-muted);
+}
+
+.navpanel__body .ledger__table--provinces thead th {
+  color: var(--text-on-dark-muted);
+}
+
+.taxrow {
+  display: grid;
+  gap: 2px;
+}
+
+.taxrow__name {
+  font-weight: 600;
+}
+
+/* Targeted operations */
+.ops {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.op {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1px 8px;
+  padding: 6px 8px;
+  text-align: left;
+  color: var(--text-on-dark);
+  font: inherit;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--umber-500);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.op:hover:not(:disabled) {
+  border-color: var(--gold-500);
+  background: rgba(201, 162, 74, 0.08);
+}
+
+.op:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.op__label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--parchment-100);
+}
+
+.op__count {
+  font-size: 0.78rem;
+  color: var(--gold-300);
+}
+
+.op__count--none {
+  color: var(--text-on-dark-muted);
+}
+
+.op__desc {
+  grid-column: 1 / -1;
+  font-size: 0.8rem;
+  color: var(--text-on-dark-muted);
+}
+
+/* ── Map targeting ────────────────────────────────────── */
+.prov--target {
+  fill-opacity: 0.5;
+  stroke: #f6d98a;
+  stroke-width: 2;
+  stroke-dasharray: 5 3;
+}
+
+.prov--dim {
+  fill-opacity: 0.08;
+  cursor: not-allowed;
+}
+
+.targetbar {
+  position: absolute;
+  z-index: 6;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(560px, calc(100% - 24px));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px 8px 14px;
+  background: rgba(23, 17, 12, 0.94);
+  border: 1px solid var(--gold-500);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.targetbar__text {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+
+.targetbar__text strong {
+  font-family: var(--font-display);
+  color: var(--gold-300);
+}
+
+.targetbar__text span {
+  font-size: 0.85rem;
+  color: var(--text-on-dark-muted);
+}
+
+.targetbar__actions {
+  display: flex;
+  gap: 6px;
+  flex: none;
+}
+
+.game__map--targeting .atlas__hint {
+  display: none;
+}
+
+/* Map Focus restore tab on the map's left edge */
+.focus-restore {
+  position: absolute;
+  z-index: 6;
+  left: 0;
+  top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px 8px 8px;
+  color: var(--gold-300);
+  font-family: var(--font-display);
+  font-weight: 700;
+  background: var(--umber-900);
+  border: 1px solid var(--gold-700);
+  border-left: 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+}
+
+.focus-restore:hover,
+.focus-restore:focus-visible {
+  border-color: var(--gold-500);
+  box-shadow: 0 0 10px rgba(201, 162, 74, 0.3);
+}
+
+/* ── Right status strip ───────────────────────────────── */
+.status {
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  margin-left: 10px;
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  scrollbar-width: thin;
+}
+
+.status__list,
+.status__warn {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  background: rgba(23, 17, 12, 0.55);
+  border: 1px solid var(--umber-600);
+  border-radius: var(--radius);
+}
+
+.srow {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 10px;
+  color: var(--text-on-dark-muted);
+  font: inherit;
+  font-size: 0.88rem;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.srow:hover {
+  color: var(--parchment-100);
+  background: rgba(201, 162, 74, 0.06);
+}
+
+.srow__value {
+  font-weight: 700;
+  color: var(--parchment-100);
+  font-variant-numeric: tabular-nums;
+}
+
+.srow__value--good {
+  color: var(--good);
+}
+
+.srow__value--bad {
+  color: #f0a08c;
+}
+
+.status__warn {
+  padding: 4px;
+  border-color: rgba(156, 61, 61, 0.5);
+}
+
+.swarn {
+  width: 100%;
+  padding: 3px 6px;
+  text-align: left;
+  font: inherit;
+  font-size: 0.8rem;
+  color: #f0b4a4;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.swarn:hover {
+  background: rgba(122, 46, 46, 0.25);
+}
+
+.status__prov {
+  display: grid;
+  gap: 4px;
+  padding: 8px 10px;
+  background: rgba(23, 17, 12, 0.55);
+  border: 1px solid var(--umber-600);
+  border-left: 3px solid var(--realm);
+  border-radius: var(--radius);
+}
+
+.status__prov-name {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--parchment-100);
+}
+
+/* ── Collapsible Royal Decrees ────────────────────────── */
+.game__bottom {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 10px;
+  padding: 8px 10px 10px;
+}
+
+.actionbar {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-end;
+}
+
+.tray__toggle {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  flex: none;
+  color: var(--gold-300);
+  background: var(--umber-900);
+  border: 1px solid var(--gold-700);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.tray__toggle:hover,
+.tray__toggle:focus-visible {
+  border-color: var(--gold-500);
+}
+
+.tray__chev {
+  transition: transform 200ms ease;
+  transform: rotate(180deg);
+}
+
+.tray--collapsed .tray__chev {
+  transform: rotate(0deg);
+}
+
+.tray__body {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 220ms ease;
+}
+
+.tray__body-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.tray--collapsed .tray__body {
+  grid-template-rows: 0fr;
+}
+
+.tray--collapsed .tray__body-inner {
+  visibility: hidden;
+  transition: visibility 0s linear 220ms;
+}
+
+.tray--collapsed .tray__meta {
+  margin-bottom: 0;
+}
+
+.tray--collapsed .decree {
+  display: none;
+}
+
+.toast__deltas {
+  margin-top: 2px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gold-300);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tray__body,
+  .tray__chev,
+  .navrail__label,
+  .navpanel {
+    transition: none;
+  }
+  .navhint {
+    animation: none;
+  }
+}
+
+/* ── Smaller screens ──────────────────────────────────── */
+@media (max-width: 1280px) {
+  .game {
+    --status-w: 190px;
+  }
+  .game[data-nav='expanded'] {
+    --panel-w: 300px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .game__main,
+  .game[data-nav] .game__main {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 8px;
+    row-gap: 8px;
+  }
+  .navrail {
+    flex-direction: row;
+    align-items: center;
+    padding: 4px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(168, 130, 47, 0.25);
+    overflow-x: auto;
+  }
+  .game[data-nav='mapFocus'] .navrail {
+    display: none;
+  }
+  .navrail__top,
+  .navrail__bottom {
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+  .navrail__list {
+    display: flex;
+    margin: 0;
+  }
+  .navrail__menu,
+  .navrail__item {
+    width: auto;
+  }
+  .navrail__label {
+    display: none;
+  }
+  .navhint {
+    left: 0;
+    top: calc(100% + 8px);
+  }
+  .navpanel {
+    display: none;
+  }
+  .game[data-nav='expanded'] .navpanel {
+    display: flex;
+  }
+  .navpanel__head,
+  .navpanel__body {
+    width: auto;
+  }
+  .navpanel__body {
+    overflow: visible;
+  }
+  .game__map,
+  .status {
+    margin-left: 0;
+  }
+  .status {
+    overflow: visible;
+  }
+  .game__bottom {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .actionbar {
+    flex-direction: row;
+  }
+}
+
+/* ── Icon-only rail: larger, centred, distinct icons ──── */
+.navrail {
+  padding: 0 8px;
+}
+
+.navrail__menu,
+.navrail__item {
+  justify-content: center;
+  width: 48px;
+  height: 46px;
+  padding: 0;
+  margin: 0 auto;
+}
+
+.navrail__menu {
+  height: 50px;
+}
+
+.navrail__item {
+  color: #b8a27a;
+}
+
+.navrail__item:hover,
+.navrail__item:focus-visible {
+  color: var(--gold-300);
+}
+
+.navrail__item--active {
+  color: var(--gold-300);
+  background: rgba(201, 162, 74, 0.16);
+}
+
+.navrail__item--active::before {
+  left: -8px;
+}
+
+.navrail__badge {
+  left: auto;
+  right: 2px;
+  top: 2px;
+}
+
+.navrail__list {
+  gap: 6px;
+}

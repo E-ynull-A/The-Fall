@@ -1,0 +1,60 @@
+/* Main game screen grid (GDD §12.2): top bar / map + sidebar / cards + actions */
+.game {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  height: 100vh;
+  min-height: 640px;
+  background:
+    radial-gradient(ellipse at top, rgba(201, 162, 74, 0.06), transparent 60%),
+    var(--umber-900);
+}
+
+.game__main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 12px;
+  padding: 12px 12px 0;
+  min-height: 0;
+}
+
+.game__map {
+  min-height: 0;
+  min-width: 0;
+}
+
+.game__bottom {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  padding: 12px;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+/* Laptop: narrower sidebar */
+@media (max-width: 1280px) {
+  .game__main {
+    grid-template-columns: minmax(0, 1fr) 300px;
+  }
+}
+
+/* Tablet & below: stack everything and let the page scroll */
+@media (max-width: 1000px) {
+  .game {
+    height: auto;
+    min-height: 100vh;
+  }
+  .game__main {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .sidebar {
+    overflow: visible;
+  }
+}
