@@ -1882,3 +1882,96 @@ body {
   .prov-label__name { font-size: 16px; }
   .prov-label__plaque { stroke-width: 1.35; }
 }
+
+
+/* ── Compact royal decrees: preserve artwork, reclaim map space ── */
+.tray {
+  padding: 6px 10px 8px;
+}
+.tray__meta {
+  min-height: 28px;
+  margin-bottom: 4px;
+  gap: 10px;
+}
+.tray__toggle {
+  width: 26px;
+  height: 26px;
+}
+.tray__title {
+  font-size: 0.9rem;
+}
+.tray__plays,
+.tray__count {
+  font-size: 0.78rem;
+}
+.tray__hand {
+  gap: 8px;
+}
+.tray .card {
+  height: 124px;
+  min-height: 124px;
+  grid-template-columns: minmax(0, 1fr) 58px;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  column-gap: 6px;
+  row-gap: 2px;
+  padding: 7px 8px;
+  border-top-width: 3px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.28);
+}
+.tray .card__art {
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  width: 58px;
+  height: 66px;
+  align-self: center;
+  border-radius: 2px;
+}
+.tray .card__header {
+  font-size: 0.72rem;
+}
+.tray .card__name {
+  font-size: 0.96rem;
+  line-height: 1.05;
+  align-self: start;
+}
+.tray .card__rows {
+  grid-row: 3;
+  margin-top: 2px;
+  gap: 2px;
+}
+.tray .card__row {
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 3px;
+}
+.tray .card__row dt,
+.tray .card__line,
+.tray .card__req,
+.tray .card__target {
+  font-size: 0.72rem;
+  line-height: 1.15;
+}
+.tray .card__line {
+  padding: 0 3px;
+}
+.tray .card__desc {
+  display: none;
+}
+.tray .card--empty {
+  height: 124px;
+  min-height: 124px;
+}
+.tray .decree {
+  top: 4px;
+  min-height: 28px;
+}
+@media (max-width: 1000px) {
+  .tray .card {
+    height: 124px;
+    min-height: 124px;
+    grid-template-columns: minmax(0, 1fr) 54px;
+  }
+  .tray .card__art {
+    width: 54px;
+    height: 62px;
+  }
+}
